@@ -10,38 +10,25 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
-router.get('/index', function(req, res, next) {
+router.use(function(req, res, next){
     if( !req.cookies.token || req.cookies.token == 'undefined' ){
-        res.redirect(301,'/user/login');
-        return false;
+        res.redirect(301,'/login');
     }
+    next();
+})
+
+router.get('/index', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
         res.render('user/index',{
             website : WEBSITE.name,
             title : '用户中心',
-            data : result,
+            userInfo : result,
             action : req.query.action
         });
     },function(err){
         res.render('user/index',{
             title : '用户中心'
         });
-    });
-});
-
-router.get('/signup', function(req, res, next) {
-    res.render('signup',{
-    	title : '注册',
-        appid : WEBSITE.appid,
-        appkey : WEBSITE.appkey
-    });
-});
-
-router.get('/login', function(req, res, next) {
-    res.render('login',{
-    	title : '登录',
-        appid : WEBSITE.appid,
-        appkey : WEBSITE.appkey
     });
 });
 

@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var LeanCloud = require('./config/leancloud');
 var WEBSITE = require('./config/website');
 
 var routerIndex = require('./routes/index');

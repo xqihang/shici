@@ -5,9 +5,7 @@
     		<h1 class="text-center">『 <%= data._serverData.title %> 』</h1>
 	    	<div class="ui fluid card block-view">
 		        <div class="content">
-		            <a href="/write/<%- data.id %>" class="description">
-		                <p><%- data._serverData.content.replace(/\n/g,'</p><p>') %></p>
-		            </a>
+		            <p><%- data._serverData.content.replace(/\n/g,'</p><p>') %></p>
 		        </div>
 		        <div class="extra content">
 		        	<a href="javascript:;">

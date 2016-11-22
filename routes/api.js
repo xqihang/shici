@@ -63,7 +63,6 @@ router.get('/write/:id', function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
-	console.log(req.cookies);
 	apiService.signup(req.body, function(result){
 		res.cookie('token', result.sessionToken, { expires: cookieDate(36500) });
 		res.send( message(1, result) );

@@ -24,14 +24,29 @@
 		<a href="/readme" v-bind:class="[isMobile?'mini':'']" class="ui blue basic button">
 			<i class="share alternate icon" v-if="!isMobile"></i>须知
 		</a>
-		<a href="/user/index" v-bind:class="[isMobile?'mini':'']" class="ui orange basic button">
-			<i class="child icon" v-if="!isMobile"></i>我的
-		</a>
+		<div class="ui dropdown">
+		    <a href="/user/index" v-bind:class="[isMobile?'mini':'']" class="ui orange basic button">
+				<i class="child icon" v-if="!isMobile"></i>我的
+			</a>
+		    <div class="menu">
+		        <div class="item" @click="goto('/login')">
+		        	<i class="sign in icon" v-if="!isMobile"></i>登录
+		        </div>
+		        <div class="item" @click="goto('/signup')">
+		            <i class="sign out icon" v-if="!isMobile"></i>注册
+		        </div>
+		    </div>
+		</div>
 		<script>
 			new Vue({
 				el : '.ui.menu-control',
 				data : {
 					isMobile : device.mobile()
+				},
+				methods : {
+					goto : function(url){
+						window.location.href = url;
+					}
 				}
 			})
 		</script>

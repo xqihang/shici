@@ -6,7 +6,7 @@
 	</h2>
 	<div class="ui small green message" v-if="action">
     	<i class="close icon" @click="closeMsg()"></i>
-    	<div v-html="msg[action].replace('您',' <%- data.username %> ')"></div>
+    	<div v-html="msg[action].replace('您',' <%- userInfo.username %> ')"></div>
     </div>
 
 	<div class="ui three statistics count-box">
@@ -25,12 +25,12 @@
 	</div>
 	
 	<script>
-		var userInfo = '<%- JSON.stringify(data) %>';
+		var userInfo = '<%- JSON.stringify(userInfo) %>';
 		new Vue({
 			el : '.main',
 			data : {
 				action : '<%- action %>',
-				username : '<%- data.username %>',
+				username : '<%- userInfo.username %>',
 				userInfo: JSON.parse(userInfo),
 				msg : {
 					login : '欢迎您回归到 『 <%= website %> 』的世界...',

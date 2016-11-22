@@ -8,6 +8,11 @@ var apiService = require('../service/api');
 // Moment 格式化日期
 var moment = require('moment');
 
+router.use(function(req, res, next){
+	res.token = req.cookies.token;
+	next();
+})
+
 /* 主页 */
 router.get('/', function(req, res, next) {
 	apiService.list(function(results){
@@ -29,6 +34,22 @@ router.get('/write/:id', function(req, res, next) {
 	},function(){
 		res.render( 'article', {title: WEBSITE.name, code: 0, msg: '未曾寻到阁下所寻之物~'} );
 	});
+});
+
+router.get('/signup', function(req, res, next) {
+    res.render('signup',{
+    	title : '注册',
+        appid : WEBSITE.appid,
+        appkey : WEBSITE.appkey
+    });
+});
+
+router.get('/login', function(req, res, next) {
+    res.render('login',{
+    	title : '登录',
+        appid : WEBSITE.appid,
+        appkey : WEBSITE.appkey
+    });
 });
 
 router.get('/readme',function(req, res, next){
