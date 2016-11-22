@@ -7,7 +7,7 @@ var apiService = require('../service/api');
 
 var extend = require('node.extend');
 var resData = {
-	title: WEBSITE.name
+	website: WEBSITE.name
 };
 
 // Moment 格式化日期
@@ -61,30 +61,31 @@ router.get('/signup', function(req, res, next) {
 	if( req.cookies.token && req.cookies.token != 'undefined' ){
         res.redirect(301,'/user/index');
     }
-    res.render('signup',{
-    	title : '注册',
+
+    resData = extend(resData, {
+		title : '注册',
         appid : WEBSITE.appid,
         appkey : WEBSITE.appkey
-    });
+	});
+    res.render('signup', resData);
 });
 
 router.get('/login', function(req, res, next) {
 	if( req.cookies.token && req.cookies.token != 'undefined' ){
         res.redirect(301,'/user/index');
     }
-    res.render('login',{
-    	title : '登录',
+
+    resData = extend(resData, {
+		title : '登录',
         appid : WEBSITE.appid,
-        appkey : WEBSITE.appkey,
-        isLogin : false
-    });
+        appkey : WEBSITE.appkey
+	});
+    res.render('login', resData);
 });
 
 router.get('/readme',function(req, res, next){
 	resData = extend(resData, {
-		title : '有一些事情，你需要知道',
-		name : WEBSITE.name,
-		isLogin : false
+		title : '有一些事情，你需要知道'
 	});
 	res.render('readme',resData);
 })

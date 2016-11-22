@@ -17,7 +17,7 @@ var table = {
 module.exports = {
     list: function(cb, err) {
         var query = new AV.Query(table['art']);
-        query.descending("createdAt");
+        query.descending("updatedAt");
         query.find().then(function(results) {
             cb && cb(results);
         }, function(error) {
