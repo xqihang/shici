@@ -5,6 +5,20 @@ var router = express.Router();
 var apiService = require('../service/api');
 var WEBSITE = require('../config/website');
 
+var extend = require('node.extend');
+var resData = {
+    website : WEBSITE.name,
+    title: WEBSITE.name
+};
+
+router.use(function(req, res,next){
+    var isLogin = ( req.cookies.token && req.cookies.token != 'undefined' ) ? true : false;
+    resData = extend(resData, {
+        isLogin: isLogin
+    });
+    next();
+})
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
@@ -15,27 +29,35 @@ router.use(function(req, res, next){
         res.redirect(301,'/login');
     }
     next();
-})
+});
 
 router.get('/index', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
-        res.render('user/index',{
-            website : WEBSITE.name,
+        resData = extend(resData, {
             title : '用户中心',
             userInfo : result,
+            action: req.query.action || 'login'
+        });
+        res.render('user/index', resData);
+    },function(err){
+        resData = extend(resData,{
+            title : '用户中心',
             action : req.query.action
         });
-    },function(err){
-        res.render('user/index',{
-            title : '用户中心'
-        });
+        res.render('user/index', resData);
     });
 });
 
 router.get('/create', function(req, res, next) {
-    res.render('create', {
+    resData = extend(resData, {
         title: '发布一条新作品'
     });
+    res.render('create', resData);
+});
+
+router.all('/logout', function(req, res, next) {
+    res.clearCookie('token');
+    res.redirect('/');
 });
 
 module.exports = router;

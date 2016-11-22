@@ -29,12 +29,21 @@
 				<i class="child icon" v-if="!isMobile"></i>我的
 			</a>
 		    <div class="menu">
-		        <div class="item" @click="goto('/login')">
-		        	<i class="sign in icon" v-if="!isMobile"></i>登录
-		        </div>
-		        <div class="item" @click="goto('/signup')">
-		            <i class="sign out icon" v-if="!isMobile"></i>注册
-		        </div>
+		    	<% if(!isLogin){ %>
+			        <div class="item" @click="goto('/login')">
+			        	<i class="sign in icon" v-if="!isMobile"></i>登录
+			        </div>
+			        <div class="item" @click="goto('/signup')">
+			            <i class="sign out icon" v-if="!isMobile"></i>注册
+			        </div>
+		        <% }else{ %>
+		        	<div class="item" @click="goto('/user/logout')">
+			        	<i class="reply icon" v-if="!isMobile"></i>登出
+			        </div>
+			        <div class="item" @click="goto('/user/index')">
+			        	<i class="leaf icon" v-if="!isMobile"></i>书房
+			        </div>
+		        <% } %>
 		    </div>
 		</div>
 		<script>
