@@ -1,0 +1,70 @@
+<%- include('header'); %>
+<div class="main">
+    <div class="list">
+    	<% if(code){ %>
+    		<h1 class="text-center">『 <%= data._serverData.title %> 』</h1>
+	    	<div class="ui fluid card block-view">
+		        <div class="content">
+		            <a href="/write/<%- data.id %>" class="description">
+		                <p><%- data._serverData.content.replace(/\n/g,'</p><p>') %></p>
+		            </a>
+		        </div>
+		        <div class="extra content">
+		        	<a href="javascript:;">
+		        		<i class="icon write"></i>
+		        		<span>墨凡</span>
+		        	</a>
+		            <a class="right floated created">
+		            	<i class="keyboard icon"></i> <%- data.createdAt %>
+		            </a>
+		        </div>
+			</div>
+
+			<div class="ui comments">
+			    <h4 class="ui horizontal header divider">
+				    <i class="comments icon"></i>
+				    评论
+				</h4>
+			    <div class="comment">
+			        <a class="avatar">
+			            <img src="http://www.cyzone.cn/uploadfile/avatar/000/35/35/31_avatar_middle.jpg">
+			        </a>
+			        <div class="content">
+			            <a class="author">墨凡</a>
+			            <div class="metadata">
+			                <span class="date">在今天5:42pm</span>
+			            </div>
+			            <div class="text">
+			                怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！
+			            </div>
+			            <div class="actions">
+			                <a class="like">
+								<i class="like red icon"></i> 4 喜欢
+							</a>
+			            </div>
+			        </div>
+			    </div>
+			    <form class="ui reply form">
+			        <div class="field">
+			            <textarea></textarea>
+			        </div>
+			        <div class="ui blue labeled submit icon button">
+			            <i class="icon edit"></i> 添加回复
+			        </div>
+			    </form>
+			</div>
+		<% }else{ %>
+			<h3><%- msg %></h3>
+			<div class="ui yellow message">
+				<p>原因可能有以下集中情况:</p>
+				<ul>
+					<li>刚被作者删掉...</li>
+					<li>信息违规，被『<%= title %>』删掉...</li>
+					<li>不巧, 我们的服务坏了...</li>
+					<li>开发者没钱提供服务了... ಥ_ಥ</li>
+				</ul>
+			</div>
+		<% } %>
+	</div>
+</div>
+<%- include('footer'); %>

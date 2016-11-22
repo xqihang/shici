@@ -1,0 +1,24 @@
+{
+  "name": "lean-shici",
+  "description": "",
+  "main": "",
+  "authors": [
+    "xqihang <xqihangwl@126.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "^2.0.8",
+    "device.js": "https://github.com/matthewhudson/device.js.git#^0.2.7",
+    "semantic": "semantic-ui#^2.2.6",
+    "bootstrap": "^3.3.7"
+  }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scale=0">
+	<link rel="stylesheet" href="/lib/semantic/dist/semantic.css" />
+	<link rel="stylesheet" href="/styles/common.css" />
+	<script src="/lib/jquery/dist/jquery.min.js"></script>
+	<script src="/lib/device.js/lib/device.min.js"></script>
+	<script src="/lib/vue/dist/vue.min.js"></script>
+	<script src="/lib/semantic/dist/semantic.js"></script>
+	<script src="/js/av-min.js"></script>
+</head>
+<body>
+<div id="page-wrap" class="page-wrap">
+	<!-- 导航 -->
+	<div class="ui menu-control">
+		<a href="/" v-bind:class="[isMobile?'mini':'']" class="ui teal basic button">
+			<i class="home icon" v-if="!isMobile"></i>首页
+		</a>
+		<a href="/user/create" v-bind:class="[isMobile?'mini':'']" class="ui green basic button">
+			<i class="write icon" v-if="!isMobile"></i>创作
+		</a>
+		<a href="/readme" v-bind:class="[isMobile?'mini':'']" class="ui blue basic button">
+			<i class="share alternate icon" v-if="!isMobile"></i>须知
+		</a>
+		<a href="/user/index" v-bind:class="[isMobile?'mini':'']" class="ui orange basic button">
+			<i class="child icon" v-if="!isMobile"></i>我的
+		</a>
+		<script>
+			new Vue({
+				el : '.ui.menu-control',
+				data : {
+					isMobile : device.mobile()
+				}
+			})
+		</script>
+	</div>

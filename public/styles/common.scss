@@ -1,0 +1,50 @@
+#page-wrap.page-wrap{
+	padding-bottom:100px;
+}
+.menu-control{
+	position:fixed!important;
+	left: 0px;
+	bottom: 0px;
+	padding:15px;
+	width: 100%;
+	text-align: center;
+	background:#fff;
+	border-top: 2px solid #eee;
+	z-index:99;
+	.ui.basic.button{
+		font-weight:bold;
+	}
+}
+.text-center{
+	text-align:center;
+}
+.open-control{
+	position:fixed!important;
+	right: 20px;
+	bottom: 20px;
+}
+.main{
+	width:580px;
+	max-width:100%;
+	margin:20px auto;
+	padding: 0 10px 10px;
+}
+
+.user-main{
+	.count-box{
+		padding:20px 0;
+	}	
+}
+
+
+.block-view{
+	margin-bottom:30px!important;
+}
+
+.footer{
+	width:560px;
+	max-width:100%;
+	margin:40px auto 0;
+	padding-top:20px;
+	border-top:2px solid #ddd;
+}

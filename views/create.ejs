@@ -1,0 +1,34 @@
+<%- include('header'); %>
+<div class="main">
+	<h2><%= title %></h2>
+    <form class="ui form" id="create-shici">
+	    <div class="ui small message" v-bind:class="[!status?'yellow':'green']" v-if="message!=''">
+	    	<i class="close icon" @click="closeMsg()"></i>
+	        <div v-html="message"></div>
+	    </div>
+	    <div class="field">
+			<div class="ui fluid dropdown dropdown-cc">
+				<div class="ui basic button fluid toggle-btn" @click="toggle()">
+					<i class="red checkered flag icon"></i>知识共享协议（<span>{{cc[select_cc].zh}}</span>）
+				</div>
+				<div class="menu fluid">
+					<div class="item" v-for="item in cc" v-on:click="selectCC(item.name)">{{item.zh}}</div>
+				</div>
+			</div>
+		</div>
+	    <div class="field">
+            <input type="text" name="title" v-model="title" placeholder="标题">
+        </div>
+	    <div class="field">
+	        <textarea name="content" placeholder="内容" v-model="content" rows="12"></textarea>
+	    </div>
+		<div class="field">
+			<div class="ui animated fluid green fade button" @click="creat()">
+				<div class="visible content">发布</div>
+				<div class="hidden content"><i class="smile icon"></i>诗意值 +1</div>
+			</div>
+		</div>
+		<a href="javascript:;">什么是知识共享协议</a>
+	</form>
+</div>
+<%- include('footer'); %>

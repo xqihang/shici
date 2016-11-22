@@ -1,0 +1,29 @@
+<%- include('header'); %>
+<div class="main">
+    <h1 class="text-center">『<%= title %>』</h1>
+
+    <div class="list">
+    <% data.forEach(function(item){ %>
+    	<div class="ui fluid card">
+    		<div class="content">
+    			<a href="/write/<%- item.id %>" class="header"><%- item._serverData.title %></a>
+    		</div>
+	        <div class="content">
+	            <a href="/write/<%- item.id %>" class="description">
+	                <p><%- item._serverData.content.replace(/\n/g,'</p><p>') %></p>
+	            </a>
+	        </div>
+	        <div class="extra content">
+	        	<a href="javascript:;">
+	        		<i class="icon write"></i>
+	        		<span>墨凡</span>
+	        	</a>
+	            <a class="right floated created">
+	            	<i class="keyboard icon"></i> <%- item.createdAt %>
+	            </a>
+	        </div>
+		</div>
+	<% }); %>
+	</div>
+</div>
+<%- include('footer'); %>

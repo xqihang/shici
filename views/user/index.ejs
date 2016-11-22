@@ -1,0 +1,48 @@
+<%- include('../header'); %>
+<div class="main user-main">
+	<h2>
+	    <i class="child icon"></i>
+	    <%= title %>（{{userInfo.username}}）
+	</h2>
+	<div class="ui small green message" v-if="action">
+    	<i class="close icon" @click="closeMsg()"></i>
+    	<div v-html="msg[action].replace('您',' <%- data.username %> ')"></div>
+    </div>
+
+	<div class="ui three statistics count-box">
+		<div class="red statistic">
+			<div class="value">2</div>
+			<div class="label">篇诗词</div>
+		</div>
+		<div class="orange statistic">
+			<div class="value">38</div>
+			<div class="label">人喜欢</div>
+		</div>
+		<div class="yellow statistic">
+			<div class="value">104</div>
+			<div class="label">条评论</div>
+		</div>
+	</div>
+	
+	<script>
+		var userInfo = '<%- JSON.stringify(data) %>';
+		new Vue({
+			el : '.main',
+			data : {
+				action : '<%- action %>',
+				username : '<%- data.username %>',
+				userInfo: JSON.parse(userInfo),
+				msg : {
+					login : '欢迎您回归到 『 <%= website %> 』的世界...',
+					signup : '很高兴您注册成为 『 <%= website %> 』 的新用户'
+				}
+			},
+			methods : {
+				closeMsg : function(){
+					this.action = '';
+				}
+			}
+		})
+	</script>
+</div>
+<%- include('../footer'); %>

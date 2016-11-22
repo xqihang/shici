@@ -1,0 +1,72 @@
+<%- include('header'); %>
+<div class="main">
+	<h2><%= title %></h2>
+    <form class="ui form signup-form">
+    	<div class="ui small message" v-bind:class="[!status?'yellow':'green']" v-if="message!=''">
+	    	<i class="close icon" @click="closeMsg()"></i>
+	        <div v-html="message"></div>
+	    </div>
+        <div class="field">
+            <input type="text" name="email" v-model="email" placeholder="邮箱">
+        </div>
+        <div class="field">
+            <input type="text" name="username" v-model="username" placeholder="用户名（非中文即可）">
+        </div>
+        <div class="field">
+            <input type="password" name="passwd" v-model="passwd" placeholder="密码">
+        </div>
+		<div class="field">
+			<div class="ui fluid teal button" @click="signup()"><%= title %></div>
+		</div>
+	</form>
+	<h4 class="ui horizontal header divider">
+	    <i class="alarm outline icon"></i>
+	    用户须知
+	</h4>
+	<div class="ui">
+		<p>注册一个新的帐号，是开始创作之旅的第一步。</p>
+		<p><span class="ui red horizontal label">妥善保管您的密码</span>，也可以更有效的保护您的作品。</p>
+		<p>填写邮箱，是为了登录和以后找回您的密码，不用作其它用途。</p>
+	</div>
+	<script>
+		$(function(){
+			var form = new Vue({
+				el : '.signup-form',
+				data : {
+					username : '',
+					passwd : '',
+					email : '',
+					message: '',
+					status : true
+				},
+				methods : {
+					signup : function(){
+						var _t = this;
+						   
+				        $.post('/api/v1/signup',{
+							username : _t.username,
+							passwd : _t.passwd,
+							email : _t.email
+						},function(res){
+							if(res.code){
+								_t.status = false;
+								_t.message = '注册成功...\n两秒后将跳转到用户中心';
+								setTimeout(function(){
+									window.location.href = '/user/index?action=signup'
+								},2000)
+								
+							}else{
+								_t.status = false;
+								_t.message = '注册失败...\n' + res.data.error;
+							}
+						})
+					},
+					closeMsg : function(){
+						this.message = '';
+					}
+				}
+			})
+		});
+	</script>
+</div>
+<%- include('footer'); %>
