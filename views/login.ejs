@@ -18,17 +18,13 @@
 	</form>
 	<h4 class="ui horizontal header divider">
 	    <i class="alarm outline icon"></i>
-	    用户须知
+	    告示
 	</h4>
 	<div class="ui">
 		<p><span class="ui red horizontal label">妥善保管您的密码</span>，也可以更有效的保护您的作品。</p>
 	</div>
 	<script>
 		$(function(){
-			AV.init({appId: '<%- appid %>', appKey: '<%- appkey %>'});
-			if( AV.User.current() ){
-				window.location.href = '/user/index';
-			}
 			var form = new Vue({
 				el : '.login-form',
 				data : {
@@ -41,22 +37,28 @@
 					submit : function(){
 						var _t = this;
 
-						$.post('/api/v1/login',{
-							username : _t.username,
-							passwd : _t.passwd,
-						},function(res){
-							if(res.code){
-								_t.status = false;
-								_t.message = '登录成功...\n两秒后将跳转到用户中心';
-								setTimeout(function(){
-									window.location.href = '/user/index?action=login'
-								},2000)
-								
-							}else{
-								_t.status = false;
-								_t.message = '登录失败...\n' + res.data.error;
-							}
-						})
+						if( _t.username && _t.passwd ){
+
+							$.post('/api/v1/login',{
+								username : _t.username,
+								passwd : _t.passwd,
+							},function(res){
+								if(res.code){
+									_t.status = false;
+									_t.message = '登录成功...\n两秒后将跳转到用户中心';
+									setTimeout(function(){
+										window.location.href = '/user/index?action=login'
+									},2000)
+									
+								}else{
+									_t.status = false;
+									_t.message = '登录失败...\n' + res.data.error;
+								}
+							})
+						}else{
+							_t.status = false;
+							_t.message = '阁下，请出示你的通关文牒~';
+						}
 					},
 					closeMsg : function(){
 						this.message = '';

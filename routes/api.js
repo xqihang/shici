@@ -28,6 +28,12 @@ function cookieDate(days){
 	return now;
 }
 
+function setCookie(res, objCookie){
+	for(var name in objCookie){
+		res.cookie( name, objCookie[name], { expires: cookieDate(36500) });
+	}
+}
+
 router.get('/', function(req, res, next) {
 	res.send( message(1, result) );
 });
@@ -46,10 +52,9 @@ router.get('/write', function(req, res, next) {
 });
 
 router.post('/write', function(req, res, next) {
-	apiService.createNew(req.body, function(result){
+	apiService.createNew(req.body, req.cookies.userid, function(result){
 		res.send( message(1, result) );
 	},function(err){
-		console.log(err);
 		res.send( message(-2, err) );
 	});
 });
@@ -64,7 +69,10 @@ router.get('/write/:id', function(req, res, next) {
 
 router.post('/signup', function(req, res, next) {
 	apiService.signup(req.body, function(result){
-		res.cookie('token', result.sessionToken, { expires: cookieDate(36500) });
+		setCookie(res,{
+			token : result.sessionToken,
+			userid : result.objectId
+		})
 		res.send( message(1, result) );
 	},function(err){
 		res.send( message(0, err) );
@@ -73,7 +81,10 @@ router.post('/signup', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
 	apiService.login(req.body, function(result){
-		res.cookie('token', result.sessionToken, { expires: cookieDate(36500) });
+		setCookie(res,{
+			token : result.sessionToken,
+			userid : result.objectId
+		})
 		res.send( message(1, result) );
 	},function(err){
 		res.send( message(0, err) );

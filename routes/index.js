@@ -26,15 +26,20 @@ router.get('/', function(req, res, next) {
 	apiService.list(function(results){
 		for( var i = 0; i< results.length; i++ ){
 			results[i].createdAt = moment( results[i].createdAt ).format('YYYY-MM-DD HH:mm');
+			results[i].updatedAt = moment( results[i].updatedAt ).format('YYYY-MM-DD HH:mm');
 		}
 
 		resData = extend(resData, {
+			title : '首页',
 			data : results
 		});
 		
 		res.render( 'index', resData );
 	},function(err){
-		res.render( 'index', {title:WEBSITE.name});
+		resData = extend(resData, {
+			title : '首页'
+		});
+		res.render( 'index', resData );
 	});
 });
 
@@ -44,12 +49,14 @@ router.get('/write/:id', function(req, res, next) {
 		result.createdAt = moment( result.createdAt ).format('YYYY-MM-DD HH:mm');
 
 		resData = extend(resData, {
+			title : result._serverData.title,
 			data: result,
 			code: 1
 		});
 		res.render( 'article', resData );
 	},function(){
 		resData = extend(resData, {
+			title : '未曾寻到相关文献',
 			code: 0,
 			msg: '未曾寻到阁下所寻之物~'
 		});

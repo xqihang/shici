@@ -11,18 +11,42 @@
 
 	<div class="ui three statistics count-box">
 		<div class="red statistic">
-			<div class="value">2</div>
+			<div class="value"><%- count %></div>
 			<div class="label">篇诗词</div>
 		</div>
 		<div class="orange statistic">
-			<div class="value">38</div>
+			<div class="value"><%- likeNum %></div>
 			<div class="label">人喜欢</div>
 		</div>
 		<div class="yellow statistic">
-			<div class="value">104</div>
+			<div class="value"><%- commentNum %></div>
 			<div class="label">条评论</div>
 		</div>
 	</div>
+
+	
+	<table class="ui table">
+	    <tbody>
+	    	<% list.forEach(function(item){ %>
+	        <tr>
+	            <td>
+	                <%- item._serverData.title %>
+	            </td>
+	            <td>
+	                <a href="javascript:;" class="right floated created">
+	                    <i class="write icon"></i>编辑
+	                </a>
+	            </td>
+	            <td>
+	            	<a href="javascript:;" class="right floated created">
+	                    <i class="share alternate icon"></i>分享
+	                </a>
+	            </td>
+	        </tr>
+	        <% }) %>
+	    </tbody>
+	</table>
+
 	
 	<script>
 		var userInfo = '<%- JSON.stringify(userInfo) %>';

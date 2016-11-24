@@ -21,7 +21,7 @@
 	</form>
 	<h4 class="ui horizontal header divider">
 	    <i class="alarm outline icon"></i>
-	    用户须知
+	    告示
 	</h4>
 	<div class="ui">
 		<p>注册一个新的帐号，是开始创作之旅的第一步。</p>
@@ -42,15 +42,25 @@
 				methods : {
 					signup : function(){
 						var _t = this;
-						   
+						
+						if( _t.username == '' ||  _t.passwd == '' ){
+							_t.status = false;
+							_t.message = '若阁下不配合填写信息，是无法为您发放通关文牒的...';
+							return false;
+						}
+						if( _t.email == '' ){
+							_t.status = false;
+							_t.message = '用于更换通关文牒...';
+							return false;
+						}
 				        $.post('/api/v1/signup',{
 							username : _t.username,
 							passwd : _t.passwd,
 							email : _t.email
 						},function(res){
 							if(res.code){
-								_t.status = false;
-								_t.message = '注册成功...\n两秒后将跳转到用户中心';
+								_t.status = true;
+								_t.message = '注册成功...\n两秒后将跳转到您的书房~';
 								setTimeout(function(){
 									window.location.href = '/user/index?action=signup'
 								},2000)

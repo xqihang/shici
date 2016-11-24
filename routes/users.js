@@ -7,28 +7,41 @@ var WEBSITE = require('../config/website');
 
 var extend = require('node.extend');
 var resData = {
-    website : WEBSITE.name,
-    title: WEBSITE.name
+    website : WEBSITE.name
 };
-
-router.use(function(req, res,next){
-    var isLogin = ( req.cookies.token && req.cookies.token != 'undefined' ) ? true : false;
-    resData = extend(resData, {
-        isLogin: isLogin
-    });
-    next();
-})
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
-});
 
 router.use(function(req, res, next){
     if( !req.cookies.token || req.cookies.token == 'undefined' ){
         res.redirect(301,'/login');
+    }else{
+        resData = extend(resData, {
+            isLogin: true
+        });
     }
     next();
+});
+
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+    apiService.currentUser(req.cookies.token, function(result, list){
+
+        var likeNum = 0;
+        var commentNum = 0;
+        // for(var i = 0; i < list.length; i++){
+
+        // }
+
+        resData = extend(resData, {
+            title : '用户中心',
+            userInfo : result,
+            count : list.length,
+            list : list,
+            likeNum : likeNum,
+            commentNum : commentNum,
+            action: req.query.action || 'login'
+        });
+        res.render('user/index', resData);
+    });
 });
 
 router.get('/index', function(req, res, next) {

@@ -32,7 +32,7 @@ module.exports = {
             err && err(error);
         })
     },
-    createNew: function(data, success, err) {
+    createNew: function(data, userid, success, err) {
 
         var Article = AV.Object.extend(table['art']);
 
@@ -42,6 +42,8 @@ module.exports = {
         for (var name in data) {
             one.set(name, data[name]);
         }
+        var user = AV.Object.createWithoutData('_User', userid);
+        one.set('user', user );
         one.save().then(function(result) {
             success && success(result);
         }, function(error) {
@@ -89,7 +91,17 @@ module.exports = {
             success && success(body);
         });
     },
+    userList : function( userid, cb ){
+        var query = new AV.Query(table['art']);
+        var withUser = AV.Object.createWithoutData('_User', userid);
+        query.descending("updatedAt");
+        query.equalTo('user', withUser);
+        query.find().then(function(results) {
+            cb && cb(results);
+        })
+    },
     currentUser:function(token, success, err){
+        var _t = this;
         request({
             url: 'https://api.leancloud.cn/1.1/users/me', 
             method: 'GET',
@@ -103,7 +115,15 @@ module.exports = {
             if (body.code) {
                 err && err(body);
             }
-            success && success(body);
+
+            var query = new AV.Query(table['art']);
+            var withUser = AV.Object.createWithoutData('_User', body.objectId);
+            query.equalTo('user', withUser);
+            query.descending("updatedAt");
+            
+            query.find().then(function(data) {
+                success && success(body, data);
+            });
         });
     }
 }
