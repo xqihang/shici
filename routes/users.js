@@ -45,17 +45,22 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/index', function(req, res, next) {
-    apiService.currentUser(req.cookies.token, function(result){
+    apiService.currentUser(req.cookies.token, function(result, list){
+
+        var likeNum = 0;
+        var commentNum = 0;
+        // for(var i = 0; i < list.length; i++){
+
+        // }
+
         resData = extend(resData, {
             title : '用户中心',
             userInfo : result,
+            count : list.length,
+            list : list,
+            likeNum : likeNum,
+            commentNum : commentNum,
             action: req.query.action || 'login'
-        });
-        res.render('user/index', resData);
-    },function(err){
-        resData = extend(resData,{
-            title : '用户中心',
-            action : req.query.action
         });
         res.render('user/index', resData);
     });
