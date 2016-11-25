@@ -24,17 +24,17 @@
 		    <div class="menu">
 		    	<% if(!isLogin){ %>
 			        <div class="item" @click="goto('/login')">
-			        	<i class="sign in icon" v-if="!isMobile"></i>登录
+			        	<i class="sign in icon"></i>登录
 			        </div>
 			        <div class="item" @click="goto('/signup')">
-			            <i class="sign out icon" v-if="!isMobile"></i>注册
+			            <i class="sign out icon"></i>注册
 			        </div>
 		        <% }else{ %>
 		        	<div class="item" @click="goto('/user/logout')">
-			        	<i class="reply icon" v-if="!isMobile"></i>登出
+			        	<i class="reply icon"></i>登出
 			        </div>
 			        <div class="item" @click="goto('/user/index')">
-			        	<i class="leaf icon" v-if="!isMobile"></i>书房
+			        	<i class="leaf icon"></i>书房
 			        </div>
 		        <% } %>
 		    </div>
