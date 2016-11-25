@@ -67,6 +67,15 @@ router.get('/write/:id', function(req, res, next) {
 	});
 });
 
+router.post('/comment', function(req, res, next) {
+	req.body.userid = req.cookies.userid;
+	apiService.event(req.body, function(result){
+		res.send( message(1, result) );
+	},function(err){
+		res.send( message(-2, err) );
+	});
+});
+
 router.post('/signup', function(req, res, next) {
 	apiService.signup(req.body, function(result){
 		setCookie(res,{
@@ -85,6 +94,15 @@ router.post('/login', function(req, res, next) {
 			token : result.sessionToken,
 			userid : result.objectId
 		})
+		res.send( message(1, result) );
+	},function(err){
+		res.send( message(0, err) );
+	});
+});
+
+router.post('/update_user', function(req, res, next) {
+
+	apiService.user(req.cookies.userid, req.cookies.token, req.body, function(result){
 		res.send( message(1, result) );
 	},function(err){
 		res.send( message(0, err) );

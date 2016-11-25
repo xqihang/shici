@@ -1,52 +1,57 @@
 <%- include('header'); %>
 <div class="main">
-    <div class="list">
+    <div class="list-wrap" id="show-wrap">
     	<% if(code){ %>
-    		<h1 class="text-center">『 <%= data._serverData.title %> 』</h1>
+    		<h1 class="text-center">『 <%= data.title %> 』</h1>
 	    	<div class="ui fluid card block-view">
 		        <div class="content">
-		            <p><%- data._serverData.content.replace(/\n/g,'</p><p>') %></p>
+		            <p><%- data.content %></p>
 		        </div>
+
 		        <div class="extra content">
-		        	<a href="javascript:;">
-		        		<i class="icon write"></i>
-		        		<span>墨凡</span>
+					
+					<a href="/u/<%- data.userid %>">
+		        		<i class="icon write"></i><%- data.user.username %>
 		        	</a>
-		            <a class="right floated created">
-		            	<i class="keyboard icon"></i> <%- data.createdAt %>
+		        	<a href="javascript:;">
+		            	<i class="history icon"></i> <%- data.createdAt %>
 		            </a>
+		        	
+		        	<a class="right floated created" href="javascript:;" @click="qrcode()">
+		        		<i class="icon share alternate"></i>分享
+		        	</a>
+		        	<a class="right floated created" href="javascript:;">
+		        		<i class="icon comment"></i> <%- comments.length %>
+		        	</a>
 		        </div>
 			</div>
 
-			<div class="ui comments">
+			<div class="ui comments" id="comments-box">
 			    <h4 class="ui horizontal header divider">
 				    <i class="comments icon"></i>
 				    评论
 				</h4>
+			    <% comments.forEach(function(item){ %>
 			    <div class="comment">
 			        <a class="avatar">
 			            <img src="http://www.cyzone.cn/uploadfile/avatar/000/35/35/31_avatar_middle.jpg">
 			        </a>
 			        <div class="content">
-			            <a class="author">墨凡</a>
+			            <a class="author"><%- item.user.username %></a>
 			            <div class="metadata">
-			                <span class="date">在今天5:42pm</span>
+			                <span class="date">留言于 <%- item.date %></span>
 			            </div>
 			            <div class="text">
-			                怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！怎样的艺术！
-			            </div>
-			            <div class="actions">
-			                <a class="like">
-								<i class="like red icon"></i> 4 喜欢
-							</a>
+			                <%- item.comment %>
 			            </div>
 			        </div>
 			    </div>
+			    <% }) %>
 			    <form class="ui reply form">
 			        <div class="field">
-			            <textarea></textarea>
+			            <textarea v-model="comment" placeholder="与原作者一较高下、或者夸奖一下作者"></textarea>
 			        </div>
-			        <div class="ui blue labeled submit icon button">
+			        <div class="ui blue labeled submit icon button" @click="postcomment('<%- id %>')">
 			            <i class="icon edit"></i> 添加回复
 			        </div>
 			    </form>
@@ -64,5 +69,64 @@
 			</div>
 		<% } %>
 	</div>
+
+	<div class="ui basic modal qrcode-modal">
+	    <i class="close icon"></i>
+	    <div class="header">分享二维码</div>
+	    <div class="image content">
+	    	<div class="ui medium image">
+		    	<img src="http://s.jiathis.com/qrcode.php?url=http://write.freelion.me/write/<%- id %>" alt="">
+		    </div>
+	        <div class="description">
+	        	<p>想必你一定很喜欢<%- title %></p>
+	        	<p>那就分享给你的好朋友吧~</p>
+	        </div>
+	    </div>
+	    <div class="actions">
+	        <div class="ui positive right labeled icon button">
+	            分享出去了~
+	            <i class="checkmark icon"></i>
+	        </div>
+	    </div>
+	</div>
+	<script>
+		$(function(){
+			$('.segment').dimmer('show');
+
+			new Vue({
+				el: '#show-wrap',
+				data: {
+					comment: '',
+					comments: [],
+					lasttime: new Date().getTime()
+				},
+				methods: {
+					qrcode: function(){
+						$('.qrcode-modal').modal({blurring: true}).modal('show');
+					},
+					postcomment: function(id){
+						var _t = this;
+						var isLogin = <%- isLogin %>;
+						if( !isLogin ){
+							window.location.href = '/login';
+							return false;
+						}
+						if(new Date().getTime() - this.lasttime >= 10000){
+							$.post('/api/v1/comment',{
+								"articleid" : id,
+								"action" : "comment",
+								"comment" : _t.comment
+							},function(res){
+								window.location.reload();
+							})
+						}
+					},
+					share : function(){
+
+					}
+				}
+			})
+		});
+	</script>
 </div>
 <%- include('footer'); %>

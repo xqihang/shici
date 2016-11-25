@@ -1,26 +1,29 @@
 <%- include('header'); %>
 <div class="main">
     <h1 class="text-center">『<%= website %>』</h1>
-    <div class="list">
+    <div class="list-wrap">
     <% data.forEach(function(item){ %>
     	<div class="ui fluid card">
     		<div class="content">
-    			<a href="/write/<%- item.id %>" class="header"><%- item._serverData.title %></a>
+    			<a href="/write/<%- item.id %>" class="header"><%- item.title %></a>
     		</div>
 	        <div class="content">
 	            <a href="/write/<%- item.id %>" class="description">
-	                <p><%- item._serverData.content.replace(/\n/g,'</p><p>') %></p>
+	                <p><%- item.content %></p>
 	            </a>
 	        </div>
 	        <div class="extra content">
-	        	<a href="javascript:;">
-	        		<i class="icon write"></i>
-	        		<span>墨凡</span>
-	        		<%= item.user %>
+				
+				<a href="/u/<%- item.userid %>">
+	        		<i class="icon write"></i><%- item.user.username %>
 	        	</a>
-	            <a class="right floated created">
-	            	<i class="keyboard icon"></i> <%- item.updatedAt %>
+	        	<a href="javascript:;">
+	            	<i class="history icon"></i> <%- item.createdAt %>
 	            </a>
+	        	
+	        	<a class="right floated created" href="javascript:;">
+	        		<i class="icon share alternate"></i>分享
+	        	</a>
 	        </div>
 		</div>
 	<% }); %>

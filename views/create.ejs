@@ -22,13 +22,19 @@
 	    <div class="field">
 	        <textarea name="content" placeholder="内容" v-model="content" rows="12"></textarea>
 	    </div>
+	    <div class="field">
+	        <div class="ui checkbox">
+	            <input type="checkbox" name="public" v-model="public">
+	            <label>是否公开发表</label>
+	        </div>
+	    </div>
 		<div class="field">
 			<div class="ui animated fluid green fade button" @click="creat()">
 				<div class="visible content">发布</div>
 				<div class="hidden content"><i class="smile icon"></i>诗意值 +1</div>
 			</div>
 		</div>
-		<a href="javascript:;">什么是知识共享协议</a>
+		<a href="/readme">什么是知识共享协议</a>
 	</form>
 </div>
 <%- include('footer'); %>

@@ -22,36 +22,11 @@ router.use(function(req, res, next){
 });
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    apiService.currentUser(req.cookies.token, function(result, list){
-
-        var likeNum = 0;
-        var commentNum = 0;
-        // for(var i = 0; i < list.length; i++){
-
-        // }
-
-        resData = extend(resData, {
-            title : '用户中心',
-            userInfo : result,
-            count : list.length,
-            list : list,
-            likeNum : likeNum,
-            commentNum : commentNum,
-            action: req.query.action || 'login'
-        });
-        res.render('user/index', resData);
-    });
-});
-
 router.get('/index', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result, list){
 
         var likeNum = 0;
         var commentNum = 0;
-        // for(var i = 0; i < list.length; i++){
-
-        // }
 
         resData = extend(resData, {
             title : '用户中心',
@@ -60,7 +35,7 @@ router.get('/index', function(req, res, next) {
             list : list,
             likeNum : likeNum,
             commentNum : commentNum,
-            action: req.query.action || 'login'
+            action: req.query.action || ''
         });
         res.render('user/index', resData);
     });
@@ -73,9 +48,24 @@ router.get('/create', function(req, res, next) {
     res.render('create', resData);
 });
 
+router.get('/update', function(req, res, next) {
+    apiService.currentUser(req.cookies.token, function(result){
+        resData = extend(resData, {
+            title : '更新用户信息',
+            userInfo : result
+        });
+        res.render('user/update', resData);
+    });
+});
+
 router.all('/logout', function(req, res, next) {
     res.clearCookie('token');
+    res.clearCookie('userid');
     res.redirect('/');
+});
+
+router.all('/', function(req, res, next) {
+    res.send('index');
 });
 
 module.exports = router;

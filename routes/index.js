@@ -9,9 +9,23 @@ var extend = require('node.extend');
 var resData = {
 	website: WEBSITE.name
 };
+function translate(html){
+	return html.replace(/\n\n/g,'</p><div class="ui hidden divider"></div><p>').replace(/\n/g,'</p><p>');
+}
 
+function renderData(item){
+
+	item.createdAt = moment( item.createdAt ).fromNow();
+	item.updatedAt = moment( item.updatedAt ).fromNow();
+
+	item.content = translate( item.content );
+
+	return item;
+}
 // Moment 格式化日期
 var moment = require('moment');
+
+moment.locale('zh-cn');
 
 router.use(function(req, res,next){
 	var isLogin = ( req.cookies.token && req.cookies.token != 'undefined' ) ? true : false;
@@ -24,9 +38,9 @@ router.use(function(req, res,next){
 /* 主页 */
 router.get('/', function(req, res, next) {
 	apiService.list(function(results){
+		console.log( results );
 		for( var i = 0; i< results.length; i++ ){
-			results[i].createdAt = moment( results[i].createdAt ).format('YYYY-MM-DD HH:mm');
-			results[i].updatedAt = moment( results[i].updatedAt ).format('YYYY-MM-DD HH:mm');
+			results[i] = renderData(results[i]);
 		}
 
 		resData = extend(resData, {
@@ -45,14 +59,27 @@ router.get('/', function(req, res, next) {
 
 router.get('/write/:id', function(req, res, next) {
 	
-	apiService.findById( req.params.id, function(result){
-		result.createdAt = moment( result.createdAt ).format('YYYY-MM-DD HH:mm');
+	apiService.findById( req.params.id, function(result, comments){
+
+		result = renderData( result );
+
+		var commentsArr = [];
+		for( var i = 0; i < comments.length; i++ ){
+			var tmp = comments[i]._serverData;
+			tmp.user = tmp.user._serverData;
+			tmp.date = moment(comments[i].updatedAt).fromNow();
+			commentsArr.push( tmp );
+		}
 
 		resData = extend(resData, {
-			title : result._serverData.title,
+			title : result.title,
 			data: result,
-			code: 1
+			code: 1,
+			id: req.params.id,
+			comments: commentsArr
 		});
+
+		console.log(commentsArr);
 		res.render( 'article', resData );
 	},function(){
 		resData = extend(resData, {

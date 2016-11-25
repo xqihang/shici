@@ -1,13 +1,24 @@
 <%- include('../header'); %>
 <div class="main user-main">
-	<h2>
-	    <i class="child icon"></i>
-	    <%= title %>（{{userInfo.username}}）
-	</h2>
-	<div class="ui small green message" v-if="action">
+	<div class="ui small message" v-if="action">
     	<i class="close icon" @click="closeMsg()"></i>
     	<div v-html="msg[action].replace('您',' <%- userInfo.username %> ')"></div>
     </div>
+
+	<div class="ui green inverted menu">
+	    <a class="active item">
+	        <i class="home icon"></i> 主页
+	    </a>
+	    <a class="item">
+	        <i class="alarm outline icon"></i> 与我有关
+	    </a>
+	    <a href="/user/update" class="item">
+	        <i class="child icon"></i> 设置
+	    </a>
+	    <a class="item right floated">
+	    	{{userInfo.username}}
+	    </a>
+	</div>
 
 	<div class="ui three statistics count-box">
 		<div class="red statistic">
@@ -25,7 +36,14 @@
 	</div>
 
 	
-	<table class="ui table">
+	<table class="ui green celled striped table">
+		<thead>
+			<tr>
+				<th>标题</th>
+				<th>编辑</th>
+				<th>分享</th>
+			</tr>
+		</thead>	
 	    <tbody>
 	    	<% list.forEach(function(item){ %>
 	        <tr>
@@ -33,14 +51,14 @@
 	                <%- item._serverData.title %>
 	            </td>
 	            <td>
-	                <a href="javascript:;" class="right floated created">
-	                    <i class="write icon"></i>编辑
-	                </a>
+	                <div class="ui button">
+	                	<i class="edit icon"></i>修改
+	                </div>
 	            </td>
 	            <td>
-	            	<a href="javascript:;" class="right floated created">
-	                    <i class="share alternate icon"></i>分享
-	                </a>
+	                <div class="ui button">
+	                	<i class="share alternate icon"></i>分享
+	                </div>
 	            </td>
 	        </tr>
 	        <% }) %>

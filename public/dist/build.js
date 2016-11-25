@@ -22523,6 +22523,7 @@ $(function(){
 		data : {
 			title : '',
 			content : '',
+			public: true,
 			select_cc : 0,
 			message: '',
 			status : true,
@@ -22568,7 +22569,21 @@ $(function(){
 				$.post('/api/v1/write',{
 					"title" : _t.title,
 					"content" : _t.content,
-					"cc" : _t.cc[ _t.select_cc ].name
+					"cc" : _t.cc[ _t.select_cc ].name,
+					"public": _t.public
+				},function(res){
+					_t.message = '创建成功... <a href="/write/'+res.data.objectId+'">即刻查看</a>';
+					_t.status = true;
+					_t.title = '';
+					_t.content = '';
+				})
+			},
+			postcomment: function(id){
+				void 0;
+				$.post('/api/v1/comment',{
+					"articleid" : id,
+					"action" : "comment",
+					"content" : _t.comment
 				},function(res){
 					_t.message = '创建成功... <a href="/write/'+res.data.objectId+'">即刻查看</a>';
 					_t.status = true;
@@ -22591,5 +22606,5 @@ $(function(){
 				this.message = '';
 			}
 		}
-	})
+	});
 });

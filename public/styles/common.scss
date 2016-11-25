@@ -29,6 +29,29 @@
 	max-width:100%;
 	margin:20px auto;
 	padding: 0 10px 10px;
+	.list-wrap{
+		.ui.card .extra a{
+			margin-right: 6px;
+			&.right{
+				margin-left: 6px;
+			}
+		}
+		.ui.comments .comment{
+			padding: 10px 0;
+			border-bottom: 1px dashed #ddd;
+			.author{
+				color: #f60;
+			}
+			&:last-child{
+				border:none;
+			}
+			.text{
+				margin: 8px 0;
+				color:#666;
+				line-height: 1.5;
+			}
+		} 
+	}
 }
 
 .user-main{
@@ -47,5 +70,5 @@
 	max-width:100%;
 	margin:40px auto 0;
 	padding-top:20px;
-	border-top:2px solid #ddd;
+	border-top:1px solid #eee;
 }
