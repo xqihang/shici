@@ -11,13 +11,7 @@
     "debug": "~2.2.0",
     "ejs": "~2.5.2",
     "express": "~4.14.0",
-    "leancloud-realtime": "^3.3.1",
-    "leancloud-storage": "^1.5.2",
-    "moment": "^2.16.0",
-    "morgan": "~1.7.0",
-    "node.extend": "^1.1.6",
-    "request": "^2.79.0",
-    "serve-favicon": "~2.3.0",
+    "express-sitemap": "^1.6.5",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-jasmine": "^2.4.2",
@@ -29,6 +23,13 @@
     "gulp-uglify": "^2.0.0",
     "gulp-webserver": "^0.9.1",
     "jshint": "^2.9.3",
+    "leancloud-realtime": "^3.3.1",
+    "leancloud-storage": "^1.5.2",
+    "moment": "^2.16.0",
+    "morgan": "~1.7.0",
+    "node.extend": "^1.1.6",
+    "request": "^2.79.0",
+    "serve-favicon": "~2.3.0",
     "should": "^11.1.1"
   }
 }
