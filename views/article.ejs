@@ -20,8 +20,8 @@
 		        	<a class="right floated created" href="javascript:;" @click="qrcode()">
 		        		<i class="icon share alternate"></i>分享
 		        	</a>
-		        	<a class="right floated created" href="javascript:;">
-		        		<i class="icon comment"></i> <%- comments.length %>
+		        	<a class="right floated created" href="#comments-box">
+		        		<i class="icon comment"></i> {{comments.length}}
 		        	</a>
 		        </div>
 			</div>
@@ -31,22 +31,20 @@
 				    <i class="comments icon"></i>
 				    评论
 				</h4>
-			    <% comments.forEach(function(item){ %>
-			    <div class="comment">
+			    <div class="comment" v-for="item in comments">
 			        <a class="avatar">
 			            <img src="http://www.cyzone.cn/uploadfile/avatar/000/35/35/31_avatar_middle.jpg">
 			        </a>
 			        <div class="content">
-			            <a class="author"><%- item.user.username %></a>
+			            <a class="author">{{item.user.username}}</a>
 			            <div class="metadata">
-			                <span class="date">留言于 <%- item.date %></span>
+			                <span class="date">留言于 {{item.date}}</span>
 			            </div>
 			            <div class="text">
-			                <%- item.comment %>
+			                {{item.comment}}
 			            </div>
 			        </div>
 			    </div>
-			    <% }) %>
 			    <form class="ui reply form">
 			        <div class="field">
 			            <textarea v-model="comment" placeholder="与原作者一较高下、或者夸奖一下作者"></textarea>
@@ -90,14 +88,13 @@
 	    </div>
 	</div>
 	<script>
-		$(function(){
-			$('.segment').dimmer('show');
 
+		$(function(){
 			new Vue({
 				el: '#show-wrap',
 				data: {
 					comment: '',
-					comments: [],
+					comments: [<%- comments %>],
 					lasttime: new Date().getTime()
 				},
 				methods: {
@@ -117,7 +114,8 @@
 								"action" : "comment",
 								"comment" : _t.comment
 							},function(res){
-								window.location.reload();
+								_t.comments = res.data;
+								location.hash = '#comments-box';
 							})
 						}
 					},

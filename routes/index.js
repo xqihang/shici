@@ -63,23 +63,14 @@ router.get('/write/:id', function(req, res, next) {
 
 		result = renderData( result );
 
-		var commentsArr = [];
-		for( var i = 0; i < comments.length; i++ ){
-			var tmp = comments[i]._serverData;
-			tmp.user = tmp.user._serverData;
-			tmp.date = moment(comments[i].updatedAt).fromNow();
-			commentsArr.push( tmp );
-		}
-
 		resData = extend(resData, {
 			title : result.title,
 			data: result,
 			code: 1,
 			id: req.params.id,
-			comments: commentsArr
+			comments: comments.toString()
 		});
 
-		console.log(commentsArr);
 		res.render( 'article', resData );
 	},function(){
 		resData = extend(resData, {

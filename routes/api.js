@@ -67,6 +67,14 @@ router.get('/write/:id', function(req, res, next) {
 	});
 });
 
+router.get('/comments/:id', function(req, res, next) {
+	apiService.comments( req.params.id, function(results){
+		res.send( message(1, results) );
+	},function(err){
+		res.send( message(-2, err) );
+	});
+});
+
 router.post('/comment', function(req, res, next) {
 	req.body.userid = req.cookies.userid;
 	apiService.event(req.body, function(result){

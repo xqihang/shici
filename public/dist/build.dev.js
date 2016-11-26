@@ -22578,19 +22578,6 @@ $(function(){
 					_t.content = '';
 				})
 			},
-			postcomment: function(id){
-				console.log(id);
-				$.post('/api/v1/comment',{
-					"articleid" : id,
-					"action" : "comment",
-					"content" : _t.comment
-				},function(res){
-					_t.message = '创建成功... <a href="/write/'+res.data.objectId+'">即刻查看</a>';
-					_t.status = true;
-					_t.title = '';
-					_t.content = '';
-				})
-			},
 			toggle : function(){
 				$('.dropdown-cc').dropdown();
 			},

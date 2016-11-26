@@ -1,5 +1,9 @@
 var WEBSITE = require('../config/website');
 var AV = require('leancloud-storage');
+// Moment 格式化日期
+var moment = require('moment');
+
+moment.locale('zh-cn');
 
 // curl Request
 var request = require('request');
@@ -56,11 +60,25 @@ module.exports = {
 
             var queryComment = new AV.Query('event');
             var article = AV.Object.createWithoutData('article', id);
+            // 日期倒序
+            queryComment.descending('createdAt');
+
             queryComment.equalTo('article', article);
             queryComment.equalTo('action', 'comment');
+
             queryComment.include('user');
+
             queryComment.find().then(function(comments){
-                success && success(result._serverData, comments);
+
+                var commentsArr = [];
+                for( var i = 0; i < comments.length; i++ ){
+                    var tmp = comments[i]._serverData;
+                    tmp.user = tmp.user._serverData;
+                    tmp.date = moment(comments[i].updatedAt).fromNow();
+                    commentsArr.push( JSON.stringify(tmp) );
+                }
+
+                success && success(result._serverData, commentsArr);
             },function(error){
                 success && success(result._serverData);
             });
@@ -68,7 +86,39 @@ module.exports = {
             err && err(error);
         })
     },
+    comments: function(id, success, err){
+        var queryComment = new AV.Query('event');
+
+        // 只查询留言
+        queryComment.equalTo('action', 'comment');
+        // 判断是否查询全部
+        if( id != 'all' ){
+            var article = AV.Object.createWithoutData('article', id);
+            queryComment.equalTo('article', article);
+        }
+        // 日期倒序
+        queryComment.descending('createdAt');
+        // 关联用户信息查询
+        queryComment.include('user');
+        queryComment.include('article');
+
+        queryComment.find().then(function(comments){
+
+            var commentsArr = [];
+            for( var i = 0; i < comments.length; i++ ){
+                var tmp = comments[i]._serverData;
+                tmp.user = tmp.user._serverData;
+                tmp.date = moment(comments[i].updatedAt).fromNow();
+                commentsArr.push( tmp );
+            }
+            success && success(commentsArr);
+        },function(error){
+            err && err(error);
+        });
+    },
     event : function(data, success, err){
+
+        var _t = this;
         var Event = AV.Object.extend(table['event']);
         var one = new Event();
 
@@ -82,8 +132,10 @@ module.exports = {
             one.set('comment', data.comment );
         }
 
-        one.save().then(function(result) {
-            success && success(result);
+        one.save().then(function() {
+            _t.comments(data.articleid,function(results){
+                success && success(results);
+            })
         }, function(error) {
             console.log(error);
             err && err(error);

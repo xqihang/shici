@@ -1,5 +1,5 @@
 <%- include('header'); %>
-<div class="main">
+<div class="main" id="index-wrap">
     <h1 class="text-center">『<%= website %>』</h1>
     <div class="list-wrap">
     <% data.forEach(function(item){ %>
@@ -21,12 +21,47 @@
 	            	<i class="history icon"></i> <%- item.createdAt %>
 	            </a>
 	        	
-	        	<a class="right floated created" href="javascript:;">
+	        	<a class="right floated created" href="javascript:;" @click="qrcode('<%- item.id %>','<%- item.title %>')">
 	        		<i class="icon share alternate"></i>分享
 	        	</a>
 	        </div>
 		</div>
 	<% }); %>
 	</div>
+	<div class="ui basic modal qrcode-modal">
+	    <i class="close icon"></i>
+	    <div class="header">分享这篇文字</div>
+	    <div class="image content">
+	    	<div class="ui medium image">
+		    	<img v-bind:src="'http://s.jiathis.com/qrcode.php?url=http://write.freelion.me/write/'+qrcodeid" alt="">
+		    </div>
+	        <div class="description">
+	        	<p>想必你一定很喜欢这篇『 {{title}} 』</p>
+	        	<p>那就分享给你的好朋友吧~</p>
+	        </div>
+	    </div>
+	    <div class="actions">
+	        <div class="ui positive right labeled icon button">
+	            分享出去了~
+	            <i class="checkmark icon"></i>
+	        </div>
+	    </div>
+	</div>
+	<script type="text/javascript">
+		new Vue({
+			el: '#index-wrap',
+			data:{
+				qrcodeid: '',
+				title : '<%= website %>'
+			},
+			methods: {
+				qrcode: function(id,title){
+					this.qrcodeid = id;
+					this.title = title;
+					$('.qrcode-modal').modal({blurring: true}).modal('show');
+				}
+			}
+		})
+	</script>
 </div>
 <%- include('footer'); %>
