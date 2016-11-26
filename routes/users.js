@@ -23,18 +23,37 @@ router.use(function(req, res, next){
 
 /* GET users listing. */
 router.get('/index', function(req, res, next) {
-    apiService.currentUser(req.cookies.token, function(result, list){
+    apiService.currentUser(req.cookies.token, function(result, list, eventlist){
 
-        var likeNum = 0;
-        var commentNum = 0;
+        var likes = [];
+        var comments = [];
+        var eventArr = [];
+
+        console.log(eventlist);
+        for(var i=0; i<eventlist.length;i++){
+            var e = eventlist[i]._serverData;
+
+            switch(e.action){
+                case 'comment':
+                    comments.push(e);
+                    break;
+                case 'like':
+                    comments.push(e);
+                    break;
+                default:
+                    eventArr.push(e);
+            }
+
+        }
 
         resData = extend(resData, {
             title : '用户中心',
             userInfo : result,
             count : list.length,
             list : list,
-            likeNum : likeNum,
-            commentNum : commentNum,
+            likes : likes,
+            comments : comments,
+            events: eventArr,
             action: req.query.action || ''
         });
         res.render('user/index', resData);

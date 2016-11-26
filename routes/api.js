@@ -84,12 +84,16 @@ router.get('/comments/:id', function(req, res, next) {
 });
 
 router.post('/comment', function(req, res, next) {
-	req.body.userid = req.cookies.userid;
-	apiService.event(req.body, function(result){
-		res.send( message(1, result) );
-	},function(err){
-		res.send( message(-2, err) );
-	});
+	if(req.body.comment){
+		req.body.userid = req.cookies.userid;
+		apiService.event(req.body, function(result){
+			res.send( message(1, result) );
+		},function(err){
+			res.send( message(-2, err) );
+		});
+	}else{
+		res.send( message(-2) );
+	}
 });
 
 router.post('/signup', function(req, res, next) {

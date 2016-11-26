@@ -25,7 +25,10 @@
 		        	</a>
 		        </div>
 			</div>
-
+			<div class="ui small yellow message" v-if="message!=''">
+		    	<i class="close icon" @click="closeMsg()"></i>
+		        <div v-html="message"></div>
+		    </div>
 			<div class="ui comments" id="comments-box">
 			    <h4 class="ui horizontal header divider">
 				    <i class="comments icon"></i>
@@ -76,7 +79,7 @@
 		    	<img src="http://s.jiathis.com/qrcode.php?url=http://write.freelion.me/write/<%- id %>" alt="">
 		    </div>
 	        <div class="description">
-	        	<p>想必你一定很喜欢<%- title %></p>
+	        	<p>想必你一定很喜欢 『 <%- title %> 』</p>
 	        	<p>那就分享给你的好朋友吧~</p>
 	        </div>
 	    </div>
@@ -95,7 +98,9 @@
 				data: {
 					comment: '',
 					comments: [<%- comments %>],
-					lasttime: new Date().getTime()
+					lasttime: new Date().getTime(),
+					status: false,
+					message: ''
 				},
 				methods: {
 					qrcode: function(){
@@ -108,8 +113,9 @@
 							window.location.href = '/login';
 							return false;
 						}
-						if(new Date().getTime() - this.lasttime >= 10000){
+						if( _t.comment != '' ){
 							$.post('/api/v1/comment',{
+								"author": '<%- data.userid %>',
 								"articleid" : id,
 								"action" : "comment",
 								"comment" : _t.comment
@@ -117,10 +123,13 @@
 								_t.comments = res.data;
 								location.hash = '#comments-box';
 							})
+						}else{
+							_t.message = '行走江湖，讲究诚信...要认真填写哦~';
+							return false;
 						}
 					},
-					share : function(){
-
+					closeMsg : function(){
+						this.message = '';
 					}
 				}
 			})

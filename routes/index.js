@@ -44,6 +44,7 @@ router.get('/', function(req, res, next) {
 		}
 
 		resData = extend(resData, {
+			title: '首页',
 			data : results
 		});
 		
@@ -84,6 +85,7 @@ router.get('/write/:id', function(req, res, next) {
 
 		result = renderData( result );
 
+		console.log(result);
 		resData = extend(resData, {
 			title : result.title,
 			data: result,

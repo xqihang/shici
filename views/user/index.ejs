@@ -7,16 +7,13 @@
 
 	<div class="ui green inverted menu">
 	    <a class="active item">
-	        <i class="home icon"></i> 主页
+	        <i class="home icon"></i> {{userInfo.username}}
 	    </a>
 	    <a class="item">
 	        <i class="alarm outline icon"></i> 与我有关
 	    </a>
 	    <a href="/user/update" class="item">
-	        <i class="child icon"></i> 设置
-	    </a>
-	    <a class="item right floated">
-	    	{{userInfo.username}}
+	        <i class="child icon"></i> 个人信息
 	    </a>
 	</div>
 
@@ -25,13 +22,13 @@
 			<div class="value"><%- count %></div>
 			<div class="label">篇诗词</div>
 		</div>
-		<div class="orange statistic">
-			<div class="value"><%- likeNum %></div>
-			<div class="label">人喜欢</div>
-		</div>
 		<div class="yellow statistic">
-			<div class="value"><%- commentNum %></div>
+			<div class="value"><%- comments.length %></div>
 			<div class="label">条评论</div>
+		</div>
+		<div class="orange statistic">
+			<div class="value"><%- likes.length %></div>
+			<div class="label">人喜欢</div>
 		</div>
 	</div>
 
@@ -39,26 +36,28 @@
 	<table class="ui green celled striped table">
 		<thead>
 			<tr>
-				<th>标题</th>
-				<th>编辑</th>
-				<th>分享</th>
+				<th width="75%">标题</th>
+				<th>操作</th>
 			</tr>
 		</thead>	
 	    <tbody>
 	    	<% list.forEach(function(item){ %>
 	        <tr>
 	            <td>
-	                <%- item._serverData.title %>
+	                <a href="/write/<%- item.id %>">
+	                	<%- item._serverData.title %>
+	                </a>
 	            </td>
 	            <td>
-	                <div class="ui button">
-	                	<i class="edit icon"></i>修改
-	                </div>
-	            </td>
-	            <td>
-	                <div class="ui button">
-	                	<i class="share alternate icon"></i>分享
-	                </div>
+	            	<a href="javascript:;" class="ui green mini icon button" title="编辑">
+	                	<i class="write icon"></i>
+	                </a>
+	                <a href="javascript:;" class="ui red mini icon button" title="删除">
+	                	<i class="trash icon"></i>
+	                </a>
+	                <a href="javascript:;" class="ui teal mini icon button" title="分享">
+	                	<i class="share alternate icon"></i>
+	                </a>
 	            </td>
 	        </tr>
 	        <% }) %>
