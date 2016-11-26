@@ -35,7 +35,7 @@ function setCookie(res, objCookie){
 }
 
 router.get('/', function(req, res, next) {
-	res.send( message(1, result) );
+	res.send( message(1, 'Api Index') );
 });
 
 router.use(function(req, res, next){
