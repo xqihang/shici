@@ -65,6 +65,7 @@ router.get('/u/:userid', function(req, res, next) {
 		}
 
 		resData = extend(resData, {
+			title : '诗人：' + results[0].user.username.toUpperCase(),
 			data : results
 		});
 		
