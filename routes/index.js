@@ -7,7 +7,8 @@ var apiService = require('../service/api');
 
 var extend = require('node.extend');
 var resData = {
-	website: WEBSITE.name
+	website: WEBSITE.name,
+	title: WEBSITE.name
 };
 function translate(html){
 	return html.replace(/\n\n/g,'</p><div class="ui hidden divider"></div><p>').replace(/\n/g,'</p><p>');
@@ -38,13 +39,11 @@ router.use(function(req, res,next){
 /* 主页 */
 router.get('/', function(req, res, next) {
 	apiService.list(function(results){
-		console.log( results );
 		for( var i = 0; i< results.length; i++ ){
 			results[i] = renderData(results[i]);
 		}
 
 		resData = extend(resData, {
-			title : '首页',
 			data : results
 		});
 		
@@ -52,6 +51,27 @@ router.get('/', function(req, res, next) {
 	},function(err){
 		resData = extend(resData, {
 			title : '首页'
+		});
+		res.render( 'index', resData );
+	});
+});
+
+router.get('/u/:userid', function(req, res, next) {
+	console.log(req.params.userid);
+	apiService.findByUserId(req.params.userid, function(results){
+		console.log(results);
+		for( var i = 0; i< results.length; i++ ){
+			results[i] = renderData(results[i]);
+		}
+
+		resData = extend(resData, {
+			data : results
+		});
+		
+		res.render( 'index', resData );
+	},function(err){
+		resData = extend(resData, {
+			title : '没有找到此用户哦~'
 		});
 		res.render( 'index', resData );
 	});

@@ -45,6 +45,34 @@ module.exports = {
             err && err(error);
         })
     },
+    findByUserId: function(userid, cb, err) {
+        
+        var query = new AV.Query(table['art']);
+        var withUser = AV.Object.createWithoutData('_User', userid);
+        query.equalTo('user', withUser);
+        query.descending("updatedAt");
+        query.include('user');
+        query.find().then(function(results) {
+            var tmpResults = [];
+
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+                // 并不需要网络访问
+                var user = result.get('user');
+                result._serverData.user = user._serverData;
+
+                result._serverData.id = result.id;
+                result._serverData.createdAt = result.createdAt;
+                result._serverData.updatedAt = result.updatedAt;
+                result._serverData.userid = user.id;
+
+                tmpResults.push(result._serverData);
+            }
+            cb && cb(tmpResults);
+        }, function(error) {
+            err && err(error);
+        })
+    },
     findById: function(id, success, err) {
         var query = new AV.Query(table['art']);
         query.include('user');

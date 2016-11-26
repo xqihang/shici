@@ -67,6 +67,14 @@ router.get('/write/:id', function(req, res, next) {
 	});
 });
 
+router.get('/u/:id', function(req, res, next) {
+	apiService.findByUserId( req.params.id, function(result){
+		res.send( message(1, result) );
+	},function(){
+		res.send( message(0, req.params.id) );
+	});
+});
+
 router.get('/comments/:id', function(req, res, next) {
 	apiService.comments( req.params.id, function(results){
 		res.send( message(1, results) );
