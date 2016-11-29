@@ -179,7 +179,12 @@ module.exports = {
         var one = new Article();
 
         for (var name in data) {
-            one.set(name, data[name]);
+            
+            if(name == 'public'){
+                one.set(name, Boolean(data[name]) );
+            }else{
+                one.set(name, data[name]);
+            }
         }
         var user = AV.Object.createWithoutData('_User', userid);
         one.set('user', user );
@@ -284,7 +289,6 @@ module.exports = {
             }
 
             err && err(body);
-            
         });
     }
 }

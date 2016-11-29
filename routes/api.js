@@ -52,6 +52,7 @@ router.get('/write', function(req, res, next) {
 });
 
 router.post('/write', function(req, res, next) {
+	console.log(req.body);
 	apiService.createNew(req.body, req.cookies.userid, function(result){
 		res.send( message(1, result) );
 	},function(err){
