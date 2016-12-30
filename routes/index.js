@@ -57,6 +57,15 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/audio', function(req, res, next) {
+
+	var spide = require('rssspider');
+	var url = 'http://www.lizhi.fm/rss/1565925.xml';
+	spide.fetchRss(url).then(function(data){
+	    res.render('audio', { title: '墨凡说电台', items: data});
+	});
+});
+
 router.get('/u/:userid', function(req, res, next) {
 	console.log(req.params.userid);
 	apiService.findByUserId(req.params.userid, function(results){

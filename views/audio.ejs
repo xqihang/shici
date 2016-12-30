@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+    	*{padding:0;margin:0;}
+    	body{font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei","Microsoft Yahei",sans-serif;font-size: 14px;}
+    	h1.title{padding: 40px;}
+    	.card{
+    		position: relative;
+    		margin:20px;
+    		width:600px;
+    		padding: 20px;
+    		border:1px solid #f0f0f0;
+    		margin:30px auto;
+    	}
+    	.progress{position:absolute;left:0;bottom:0px;width:100%;height: 5px;display: none;}
+    	.progress .bar{width: 0;height: 5px;background:#00cc33;}
+
+    	.card.current-play .progress{display: block;}
+    	.wrap{
+    		display: flex;
+    	}
+    	.wrap .thumb-box{position:relative;}
+
+    	.play-layer{position: absolute;left: 0;top:0;width:80px;height:80px;color:#fff;background:rgba(0,0,0,.6);text-align: center;line-height: 80px;cursor: pointer;}
+    	.wrap img{display: block;width: 80px;height: 80px;}
+    	.wrap .box{padding-left: 20px;}
+    	.wrap .box .title{font-size: 18px;margin-bottom: 10px;}
+    	.wrap .box p{line-height: 1.8;}
+    	.wrap .box .import{color:#0080da;}
+    	.music-box{margin-top: 10px;}
+    	.music-box audio{width: 100%;}
+    </style>
+    <script src="http://cdn.bootcss.com/jquery/1.12.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1 class="title"><%= title %></h1>
+	<% items.forEach(function(item){%>
+        <div class="card" data-url="<%=item.link %>">
+        	<div class="wrap">
+        		<div class="thumb-box">
+        			<% if(item.image.url){ %>
+	        			<img src="<%=item.image.url %>" alt="">
+	        		<% }else{ %>
+						<img src="http://cdn.lizhi.fm/podcast_cover/podcast_imgthum_5733713278428791463.jpg" alt="">
+	        		<% } %>
+	        		<div class="play-layer">播放</div>
+	        	</div>
+	        	<div class="box">
+		        	<div class="title"><%=item.title %></div>
+		        	<p>作者：<span class="import"><%=item.author %></span></p>
+		        	<p><%-item.description %></p>
+	        	</div>
+        	</div>
+        	<div class="progress">
+        		<div class="bar"></div>
+        	</div>
+        </div>
+    <% }) %>
+
+    <audio id="audio" src="" autoplay></audio>
+    <script type="text/javascript">
+
+    	$(function(){
+    		var url  = '';
+    		
+
+    		function progress(index){
+
+
+    			var timer = null;
+	    		
+	    		timer = setInterval(function(){
+	    			if( !$('#audio')[0].paused ){
+	    				var duration = $('#audio')[0].duration;
+	    				var currentTime = $('#audio')[0].currentTime;
+
+	    				var number = currentTime / duration * 100 + '%';
+
+	    				$('.card').eq(index-1).find('.progress .bar').css({width: number})
+	    			}else{
+	    				clearInterval(timer);
+	    			}
+	    		},1000);
+	    	}
+
+    		$('.card .play-layer').click(function(){
+
+    			// 不停的暂停继续
+    			if( url == $(this).parents('.card').data('url') ){
+    				
+    				var paused = $('#audio')[0].paused;
+
+    				$(this).html( !paused ? '继续' : '暂停' );
+    				!paused ? $('#audio')[0].pause() : $('#audio')[0].play();
+
+    			}else{
+	    			// 其他情况
+	    			url = $(this).parents('.card').data('url');
+
+	    			$('.card .play-layer').html('播放');
+	    			$(this).html('暂停');
+
+	    			$('.card').removeClass('current-play');
+	    			$(this).parents('.card').addClass('current-play');
+
+	    			$('#audio').attr('src', url );
+	    			
+	    		}
+
+    			progress( $(this).parents('.card').index() );
+    		});
+    	});
+    </script>
+  </body>
+</html>
