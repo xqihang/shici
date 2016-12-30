@@ -2,14 +2,16 @@
 <html>
   <head>
     <title><%= title %></title>
+    <meta name="viewport" content="width=device-width,init-scale=1,user-scale=no">
     <style>
     	*{padding:0;margin:0;}
     	body{font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei","Microsoft Yahei",sans-serif;font-size: 14px;}
-    	h1.title{padding: 40px;}
+    	h1.title{padding: 40px 40px 0;}
     	.card{
     		position: relative;
     		margin:20px;
     		width:600px;
+            max-width: calc(90% - 40px);
     		padding: 20px;
     		border:1px solid #f0f0f0;
     		margin:30px auto;
@@ -25,7 +27,7 @@
 
     	.play-layer{position: absolute;left: 0;top:0;width:80px;height:80px;color:#fff;background:rgba(0,0,0,.6);text-align: center;line-height: 80px;cursor: pointer;}
     	.wrap img{display: block;width: 80px;height: 80px;}
-    	.wrap .box{padding-left: 20px;}
+    	.wrap .box{padding-left: 20px;overflow: hidden;}
     	.wrap .box .title{font-size: 18px;margin-bottom: 10px;}
     	.wrap .box p{line-height: 1.8;}
     	.wrap .box .import{color:#0080da;}
