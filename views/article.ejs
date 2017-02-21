@@ -25,6 +25,9 @@
 		        	</a>
 		        </div>
 			</div>
+			<div class="ui by-block">
+				知识共享协议： <strong>{{cc['<%- data.cc %>'] || '无'}}</strong>
+			</div>
 			<div class="ui small yellow message" v-if="message!=''">
 		    	<i class="close icon" @click="closeMsg()"></i>
 		        <div v-html="message"></div>
@@ -100,7 +103,15 @@
 					comments: [<%- comments %>],
 					lasttime: new Date().getTime(),
 					status: false,
-					message: ''
+					message: '',
+					cc: {
+						'by-nc-nd': '署名-非商业使用-禁止演绎',
+						'by-nc-sa': '署名-非商业性使用-相同方式共享',
+						'by-nc': '署名-非商业性使用',
+						'by-nd': '署名-禁止演绎',
+						'by-sa': '署名-相同方式共享',
+						'by': '署名'
+					}
 				},
 				methods: {
 					qrcode: function(){

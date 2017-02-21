@@ -27,6 +27,7 @@
     "leancloud-storage": "^1.5.2",
     "moment": "^2.16.0",
     "morgan": "~1.7.0",
+    "mp3-duration": "^1.0.10",
     "node.extend": "^1.1.6",
     "request": "^2.79.0",
     "rssspider": "^1.4.3",

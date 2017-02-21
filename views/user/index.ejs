@@ -6,7 +6,7 @@
     </div>
 
 	<div class="ui green inverted menu">
-	    <a class="active item">
+		<a href="/" class="item active left">
 	        <i class="home icon"></i> {{userInfo.username}}
 	    </a>
 	    <a class="item">
@@ -36,8 +36,9 @@
 	<table class="ui green celled striped table">
 		<thead>
 			<tr>
-				<th width="75%">标题</th>
-				<th>操作</th>
+				<th>标题</th>
+				<th class="center aligned" width="60">状态</th>
+				<th class="center aligned" width="50">分享</th>
 			</tr>
 		</thead>	
 	    <tbody>
@@ -48,14 +49,21 @@
 	                	<%- item._serverData.title %>
 	                </a>
 	            </td>
-	            <td>
-	            	<a href="javascript:;" class="ui green mini icon button" title="编辑">
+	            <td class="center aligned">
+	        		<% if (item._serverData.public) { %>
+						<i class="unhide icon"></i>
+					<% } else { %>
+						<i class="hide icon"></i>
+					<% } %>
+	        	</td>
+	            <td class="center aligned">
+	            	<!-- <a href="javascript:;" class="ui green mini icon button" title="编辑">
 	                	<i class="write icon"></i>
-	                </a>
-	                <a href="javascript:;" class="ui red mini icon button" title="删除">
+	                </a> -->
+	                <!-- <a href="javascript:;" class="ui red mini icon button" title="删除">
 	                	<i class="trash icon"></i>
-	                </a>
-	                <a href="javascript:;" class="ui teal mini icon button" title="分享">
+	                </a> -->
+	                <a href="javascript:;" class="ui teal mini icon button" title="分享"  @click="qrcode('<%- item.id %>','<%- item._serverData.title %>')">
 	                	<i class="share alternate icon"></i>
 	                </a>
 	            </td>
@@ -64,7 +72,26 @@
 	    </tbody>
 	</table>
 
-	
+	<div class="ui basic modal qrcode-modal">
+	    <i class="close icon"></i>
+	    <div class="header">分享这篇文字</div>
+	    <div class="image content">
+	    	<div class="ui medium image">
+		    	<img v-bind:src="'http://s.jiathis.com/qrcode.php?url=http://shici.freelion.me/write/'+qrcodeid" alt="">
+		    </div>
+	        <div class="description">
+	        	<p>想必你一定很喜欢这篇『 {{title}} 』</p>
+	        	<p>那就分享给你的好朋友吧~</p>
+	        </div>
+	    </div>
+	    <div class="actions">
+	        <div class="ui positive right labeled icon button">
+	            分享出去了~
+	            <i class="checkmark icon"></i>
+	        </div>
+	    </div>
+	</div>
+
 	<script>
 		var userInfo = '<%- JSON.stringify(userInfo) %>';
 		new Vue({
@@ -73,6 +100,8 @@
 				action : '<%- action %>',
 				username : '<%- userInfo.username %>',
 				userInfo: JSON.parse(userInfo),
+				qrcodeid: '',
+				title : '<%= website %>',
 				msg : {
 					login : '欢迎您回归到 『 <%= website %> 』的世界...',
 					signup : '很高兴您注册成为 『 <%= website %> 』 的新用户'
@@ -81,6 +110,11 @@
 			methods : {
 				closeMsg : function(){
 					this.action = '';
+				},
+				qrcode: function(id,title){
+					this.qrcodeid = id;
+					this.title = title;
+					$('.qrcode-modal').modal({blurring: true}).modal('show');
 				}
 			}
 		})

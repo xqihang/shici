@@ -57,6 +57,13 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/about', function(req, res, next) {
+	resData = extend(resData, {
+		title : '关于 [' + WEBSITE.name + ']这个项目'
+	});
+	res.render('about', resData);
+});
+
 router.get('/audio', function(req, res, next) {
 
 	var spide = require('rssspider');
