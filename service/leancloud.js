@@ -24,9 +24,10 @@ module.exports = {
         var query = new AV.Query(table['art']);
         query.include('user');
         query.descending("createdAt");
+        query.notEqualTo('public', false);
         query.find().then(function(results) {
             var tmpResults = [];
-
+            console.log(results);
             for (var i = 0; i < results.length; i++) {
                 var result = results[i];
                 // 并不需要网络访问
@@ -52,6 +53,7 @@ module.exports = {
         query.equalTo('user', withUser);
         query.descending("updatedAt");
         query.include('user');
+        query.notEqualTo('public', false);
         query.find().then(function(results) {
             var tmpResults = [];
 

@@ -25,8 +25,9 @@
 		        	</a>
 		        </div>
 			</div>
-			<div class="ui by-block">
-				知识共享协议： <strong>{{cc['<%- data.cc %>'] || '无'}}</strong>
+			<div class="ui by-block content">
+				<span>知识共享协议： <strong class="ui horizontal label">{{cc['<%- data.cc %>'] || '无'}}</strong></span>
+				<a href="/u/<%- data.userid %>" class="pull-right positive ui button mini" data-tooltip="联系方式：<%- data.user.email %>">作者专栏</a>
 			</div>
 			<div class="ui small yellow message" v-if="message!=''">
 		    	<i class="close icon" @click="closeMsg()"></i>

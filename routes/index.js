@@ -6,10 +6,6 @@ var WEBSITE = require('../config/website');
 var apiService = require('../service/api');
 
 var extend = require('node.extend');
-var resData = {
-	website: WEBSITE.name,
-	title: WEBSITE.name
-};
 function translate(html){
 	return html.replace(/\n\n/g,'</p><div class="ui hidden divider"></div><p>').replace(/\n/g,'</p><p>');
 }
@@ -29,10 +25,7 @@ var moment = require('moment');
 moment.locale('zh-cn');
 
 router.use(function(req, res,next){
-	var isLogin = ( req.cookies.token && req.cookies.token != 'undefined' ) ? true : false;
-    resData = extend(resData, {
-    	isLogin: isLogin
-    });
+	res.isLogin = ( req.cookies.token && req.cookies.token != 'undefined' ) ? true : false;
     next();
 })
 
@@ -42,26 +35,27 @@ router.get('/', function(req, res, next) {
 		for( var i = 0; i< results.length; i++ ){
 			results[i] = renderData(results[i]);
 		}
-
-		resData = extend(resData, {
+		
+		res.render( 'index', {
+			isLogin: res.isLogin,
 			title: '首页',
+			website: WEBSITE.name,
 			data : results
 		});
-		
-		res.render( 'index', resData );
 	},function(err){
-		resData = extend(resData, {
-			title : '首页'
+		res.render( 'index', {
+			title: '首页',
+			website: WEBSITE.name
 		});
-		res.render( 'index', resData );
 	});
 });
 
 router.get('/about', function(req, res, next) {
-	resData = extend(resData, {
-		title : '关于 [' + WEBSITE.name + ']这个项目'
+	res.render('about', {
+		isLogin: res.isLogin,
+		title: '关于 [' + WEBSITE.name + ']这个项目',
+		website: WEBSITE.name
 	});
-	res.render('about', resData);
 });
 
 router.get('/audio', function(req, res, next) {
@@ -69,29 +63,28 @@ router.get('/audio', function(req, res, next) {
 	var spide = require('rssspider');
 	var url = 'http://www.lizhi.fm/rss/1565925.xml';
 	spide.fetchRss(url).then(function(data){
-	    res.render('audio', { title: '墨凡说电台', items: data});
+	    res.render('audio', { isLogin: res.isLogin, title: '墨凡说电台', items: data});
 	});
 });
 
 router.get('/u/:userid', function(req, res, next) {
-	console.log(req.params.userid);
 	apiService.findByUserId(req.params.userid, function(results){
-		console.log(results);
 		for( var i = 0; i< results.length; i++ ){
 			results[i] = renderData(results[i]);
 		}
 
-		resData = extend(resData, {
+		res.render( 'index', {
+			isLogin: res.isLogin,
 			title : '诗人：' + results[0].user.username.toUpperCase(),
+			website: results[0].user.username.toUpperCase() + ' : ' + results.length + '篇专栏',
 			data : results
 		});
-		
-		res.render( 'index', resData );
 	},function(err){
-		resData = extend(resData, {
-			title : '没有找到此用户哦~'
+		res.render( 'index', {
+			isLogin: res.isLogin,
+			title : '没有找到此用户哦~',
+			website: WEBSITE.name
 		});
-		res.render( 'index', resData );
 	});
 });
 
@@ -101,23 +94,23 @@ router.get('/write/:id', function(req, res, next) {
 
 		result = renderData( result );
 
-		console.log(result);
-		resData = extend(resData, {
+		res.render( 'article', {
+			isLogin: res.isLogin,
 			title : result.title,
+			website: WEBSITE.name,
 			data: result,
 			code: 1,
 			id: req.params.id,
 			comments: comments.toString()
 		});
-
-		res.render( 'article', resData );
 	},function(){
-		resData = extend(resData, {
+		res.render( 'article', {
+			isLogin: res.isLogin,
 			title : '未曾寻到相关文献',
+			website: WEBSITE.name,
 			code: 0,
 			msg: '未曾寻到阁下所寻之物~'
-		});
-		res.render( 'article', resData );
+		} );
 	});
 });
 
@@ -126,32 +119,34 @@ router.get('/signup', function(req, res, next) {
         res.redirect(301,'/user/index');
     }
 
-    resData = extend(resData, {
+    res.render('signup', {
+    	isLogin: res.isLogin,
 		title : '注册',
+		website: WEBSITE.name,
         appid : WEBSITE.appid,
         appkey : WEBSITE.appkey
 	});
-    res.render('signup', resData);
 });
 
 router.get('/login', function(req, res, next) {
 	if( req.cookies.token && req.cookies.token != 'undefined' ){
         res.redirect(301,'/user/index');
     }
-
-    resData = extend(resData, {
+    res.render('login', {
+    	isLogin: res.isLogin,
 		title : '登录',
+		website: WEBSITE.name,
         appid : WEBSITE.appid,
         appkey : WEBSITE.appkey
 	});
-    res.render('login', resData);
 });
 
 router.get('/readme',function(req, res, next){
-	resData = extend(resData, {
-		title : '有一些事情，你需要知道'
+	res.render('readme',{
+		isLogin: res.isLogin,
+		title : '有一些事情，你需要知道',
+		website: WEBSITE.name
 	});
-	res.render('readme',resData);
 })
 
 module.exports = router;

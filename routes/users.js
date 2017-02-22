@@ -5,18 +5,11 @@ var router = express.Router();
 var apiService = require('../service/api');
 var WEBSITE = require('../config/website');
 
-var extend = require('node.extend');
-var resData = {
-    website : WEBSITE.name
-};
-
 router.use(function(req, res, next){
     if( !req.cookies.token || req.cookies.token == 'undefined' ){
         res.redirect(301,'/login');
     }else{
-        resData = extend(resData, {
-            isLogin: true
-        });
+        res.isLogin = true;
     }
     next();
 });
@@ -28,8 +21,6 @@ router.get('/index', function(req, res, next) {
         var likes = [];
         var comments = [];
         var eventArr = [];
-
-        console.log(eventlist);
         for(var i=0; i<eventlist.length;i++){
             var e = eventlist[i]._serverData;
 
@@ -43,10 +34,10 @@ router.get('/index', function(req, res, next) {
                 default:
                     eventArr.push(e);
             }
-
         }
-
-        resData = extend(resData, {
+        res.render('user/index', {
+            isLogin: res.isLogin,
+            website: WEBSITE.name,
             title : '用户中心',
             userInfo : result,
             count : list.length,
@@ -56,24 +47,24 @@ router.get('/index', function(req, res, next) {
             events: eventArr,
             action: req.query.action || ''
         });
-        res.render('user/index', resData);
     });
 });
 
 router.get('/create', function(req, res, next) {
-    resData = extend(resData, {
+    res.render('create', {
+        isLogin: res.isLogin,
+        website: WEBSITE.name,
         title: '发布一条新作品'
     });
-    res.render('create', resData);
 });
 
 router.get('/update', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
-        resData = extend(resData, {
+        res.render('user/update', {
             title : '更新用户信息',
+            website: WEBSITE.name,
             userInfo : result
         });
-        res.render('user/update', resData);
     });
 });
 
