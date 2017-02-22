@@ -75,8 +75,8 @@ router.get('/u/:userid', function(req, res, next) {
 
 		res.render( 'index', {
 			isLogin: res.isLogin,
-			title : '诗人：' + results[0].user.username.toUpperCase(),
-			website: results[0].user.username.toUpperCase() + ' : ' + results.length + '篇专栏',
+			title : '诗人',
+			website: results[0].user.username.toUpperCase() + ' : ' + results.length + '篇 - ' + WEBSITE.name,
 			data : results
 		});
 	},function(err){
@@ -90,7 +90,7 @@ router.get('/u/:userid', function(req, res, next) {
 
 router.get('/write/:id', function(req, res, next) {
 	
-	apiService.findById( req.params.id, function(result, comments){
+	apiService.findById( req.params.id, function(result, comments, likes){
 
 		result = renderData( result );
 
@@ -101,7 +101,8 @@ router.get('/write/:id', function(req, res, next) {
 			data: result,
 			code: 1,
 			id: req.params.id,
-			comments: comments.toString()
+			comments: comments.toString(),
+			likes: likes
 		});
 	},function(){
 		res.render( 'article', {

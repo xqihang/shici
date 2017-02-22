@@ -38,11 +38,6 @@ router.get('/', function(req, res, next) {
 	res.send( message(1, 'Api Index') );
 });
 
-router.use(function(req, res, next){
-	console.log('Run in at time:' + new Date() );
-	next();
-})
-
 router.get('/write', function(req, res, next) {
 	apiService.list(function(result){
 		res.send( message(1, result) );
@@ -52,7 +47,6 @@ router.get('/write', function(req, res, next) {
 });
 
 router.post('/write', function(req, res, next) {
-	console.log(req.body);
 	apiService.createNew(req.body, req.cookies.userid, function(result){
 		res.send( message(1, result) );
 	},function(err){
@@ -68,6 +62,15 @@ router.get('/write/:id', function(req, res, next) {
 	});
 });
 
+
+router.get('/views/:id', function(req, res, next) {
+	apiService.viewsById( req.params.id, function(result){
+		res.send( message(1, result) );
+	},function(){
+		res.send( message(0, req.params.id) );
+	});
+});
+
 router.get('/u/:id', function(req, res, next) {
 	apiService.findByUserId( req.params.id, function(result){
 		res.send( message(1, result) );
@@ -77,24 +80,28 @@ router.get('/u/:id', function(req, res, next) {
 });
 
 router.get('/comments/:id', function(req, res, next) {
-	apiService.comments( req.params.id, function(results){
+	apiService.events( req.params.id, 'comment', function(results){
 		res.send( message(1, results) );
 	},function(err){
 		res.send( message(-2, err) );
 	});
 });
 
-router.post('/comment', function(req, res, next) {
-	if(req.body.comment){
-		req.body.userid = req.cookies.userid;
-		apiService.event(req.body, function(result){
-			res.send( message(1, result) );
-		},function(err){
-			res.send( message(-2, err) );
-		});
-	}else{
-		res.send( message(-2) );
-	}
+router.get('/likes/:id', function(req, res, next) {
+	apiService.events( req.params.id, 'likes', function(results){
+		res.send( message(1, results) );
+	},function(err){
+		res.send( message(-2, err) );
+	});
+});
+
+router.post('/events', function(req, res, next) {
+	req.body.userid = req.cookies.userid;
+	apiService.event(req.body, function(result){
+		res.send( message(1, result) );
+	},function(err){
+		res.send( message(-2, err) );
+	});
 });
 
 router.post('/signup', function(req, res, next) {

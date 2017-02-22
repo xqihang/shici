@@ -33,11 +33,6 @@
 > 根据`id`获取指定作者的诗词列表
 > 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
 
-### GET `/comments/:id` 
-
-> 根据`诗词id`获取指定诗词的评论列表
-> 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
-
 ### POST `/comment` 
 
 > 新增一篇评论
@@ -46,6 +41,32 @@
 >* "articleid" : 诗词id
 >* "action" : "comment"
 >* "comment" : 评论内容
+
+### GET `/comments/all` 
+
+> 获取全部评论列表
+> 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
+
+### GET `/comments/:id` 
+
+> 根据`诗词id`获取指定诗词的评论列表
+> 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
+
+### GET `/likes/all` 
+
+> 获取全部喜欢列表
+> 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
+
+### GET `/likes/:id` 
+
+> 根据`诗词id`获取指定诗词的喜欢列表
+> 返回实例： `{"code":1,"data":[{},{}],"msg":""}`
+
+### GET `/views/:id` 
+
+> 根据`诗词id`更新访问次数
+> 返回实例： `{"code":1,"data":{"views": 63,"objectId": "58aab06c8ac247006e6190ae","updatedAt": "2017-02-22T08:20:20.352Z"},"msg":""}`
+
 
 ### POST `/signup` 
 

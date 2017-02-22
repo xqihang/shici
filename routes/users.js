@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+// Moment 格式化日期
+var moment = require('moment');
+
 // api Service
 var apiService = require('../service/api');
 var WEBSITE = require('../config/website');
@@ -28,8 +31,8 @@ router.get('/index', function(req, res, next) {
                 case 'comment':
                     comments.push(e);
                     break;
-                case 'like':
-                    comments.push(e);
+                case 'likes':
+                    likes.push(e);
                     break;
                 default:
                     eventArr.push(e);
@@ -46,6 +49,28 @@ router.get('/index', function(req, res, next) {
             comments : comments,
             events: eventArr,
             action: req.query.action || ''
+        });
+    });
+});
+
+router.get('/event', function(req, res, next) {
+    apiService.currentUser(req.cookies.token, function(result, list, eventlist){
+
+        for(var i=0; i<eventlist.length;i++){
+            var temp = eventlist[i]._serverData;
+            temp.date = moment(eventlist[i].updatedAt).fromNow();
+            eventlist[i] = temp;
+
+            console.log(eventlist[i].article)
+        }
+        res.render('user/event', {
+            isLogin: res.isLogin,
+            website: WEBSITE.name,
+            title : '互动消息',
+            userInfo : result,
+            count : list.length,
+            list : list,
+            events: eventlist
         });
     });
 });

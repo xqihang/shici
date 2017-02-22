@@ -36,6 +36,16 @@
 	max-width:100%;
 	margin:20px auto;
 	padding: 0 10px 10px;
+	.event-list{
+		margin-top: 30px;
+		.event{
+			padding:20px 0;
+			border-bottom:1px dashed #f0f0f0;
+			&:last-child{
+				border:none;
+			}
+		}
+	}
 	.list-wrap{
 		.ui.card .extra a{
 			margin-right: 6px;
@@ -44,10 +54,7 @@
 			}
 		}
 		.by-block{
-			border: 1px solid rgba(34,36,38,.15);
-			border-radius:3px;
-			margin:0 0 30px;
-			padding:10px 10px 10px 15px;
+			margin:30px 0 40px;
 			display: flex;
 			align-items:center;
 			justify-content:space-between;

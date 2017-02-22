@@ -8,7 +8,7 @@
 		            <p><%- data.content %></p>
 		        </div>
 
-		        <div class="extra content">
+				<div class="extra content">
 					
 					<a href="/u/<%- data.userid %>">
 		        		<i class="icon write"></i><%- data.user.username %>
@@ -16,7 +16,7 @@
 		        	<a href="javascript:;">
 		            	<i class="history icon"></i> <%- data.createdAt %>
 		            </a>
-		        	
+		        	<a class="ui horizontal label">知识共享：{{cc['<%- data.cc %>'] || '无'}}</a>
 		        	<a class="right floated created" href="javascript:;" @click="qrcode()">
 		        		<i class="icon share alternate"></i>分享
 		        	</a>
@@ -25,9 +25,21 @@
 		        	</a>
 		        </div>
 			</div>
+			<div class="ui">
+				
+			</div>
 			<div class="ui by-block content">
-				<span>知识共享协议： <strong class="ui horizontal label">{{cc['<%- data.cc %>'] || '无'}}</strong></span>
-				<a href="/u/<%- data.userid %>" class="pull-right positive ui button mini" data-tooltip="联系方式：<%- data.user.email %>">作者专栏</a>
+				<div class="ui labeled button">
+					<div class="ui button mini"><i class="unhide icon"></i>浏览</div>
+					<a class="ui basic left pointing label"><%- data.views+1 %></a>
+				</div>
+
+				<div class="ui labeled button" @click="likes('<%- id %>')">
+					<div class="ui green button mini"><i class="thumbs up icon"></i>欢喜</div>
+					<a class="ui basic green left pointing label">{{like}}</a>
+				</div>
+				
+				<a href="/u/<%- data.userid %>" class="pull-right teal basic ui button mini" data-tooltip="联系方式：<%- data.user.email %>">作者专栏</a>
 			</div>
 			<div class="ui small yellow message" v-if="message!=''">
 		    	<i class="close icon" @click="closeMsg()"></i>
@@ -97,11 +109,13 @@
 	<script>
 
 		$(function(){
+			$.get('/api/v1/views/<%- data.id %>');
 			new Vue({
 				el: '#show-wrap',
 				data: {
 					comment: '',
 					comments: [<%- comments %>],
+					like: <%- likes %>,
 					lasttime: new Date().getTime(),
 					status: false,
 					message: '',
@@ -126,19 +140,36 @@
 							return false;
 						}
 						if( _t.comment != '' ){
-							$.post('/api/v1/comment',{
+							$.post('/api/v1/events',{
 								"author": '<%- data.userid %>',
 								"articleid" : id,
 								"action" : "comment",
 								"comment" : _t.comment
 							},function(res){
 								_t.comments = res.data;
+								// 清空留言框
+								_t.comment = '';
 								location.hash = '#comments-box';
 							})
 						}else{
 							_t.message = '行走江湖，讲究诚信...要认真填写哦~';
 							return false;
 						}
+					},
+					likes: function(id){
+						var _t = this;
+						var isLogin = <%- isLogin %>;
+						if( !isLogin ){
+							window.location.href = '/login';
+							return false;
+						}
+						$.post('/api/v1/events',{
+							"author": '<%- data.userid %>',
+							"articleid" : id,
+							"action" : "likes"
+						},function(res){
+							_t.like = res.data.length;
+						})
 					},
 					closeMsg : function(){
 						this.message = '';
