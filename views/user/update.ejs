@@ -33,7 +33,7 @@
 	            <input type="email" v-model="email" placeholder="邮箱">
 	        </div>
 	        <div class="four wide field">
-	            <div class="ui fluid button" v-bind:class="[email?'teal':'disabled']" v-disabled="email">重置密码</div>
+	            <div class="ui fluid button" v-bind:class="[email?'teal':'disabled']" v-disabled="email" @click="setpass">重置密码</div>
 	        </div>
 	    </div>
 	    <div class="field">
@@ -69,10 +69,31 @@
 					},
 					selectSex : function(sex){
 						this.sex = sex;
-						console.log(this.sex);
 					},
 					closeMsg : function(){
 						this.message = '';
+					},
+					setpass: function(){
+						var _t = this;
+						$.post('/api/v1/setpasswd',{
+							"email" : _t.email
+						},function(res){
+							layer.open({
+								title: '重置密码成功',
+								content: '点击按钮前往邮箱，点击邮件中的链接修改密码',
+								btn: ['前往邮箱'],
+								yes: function(){
+
+									// 修改密码及时退出
+									$.get('/user/logout');
+
+									var emailArr = _t.email.split('@');
+									emailArr[0] = 'http://mail.';
+
+									window.location.href = emailArr.join("");
+								}
+							}); 
+						})
 					},
 					submit : function(){
 						var _t = this;

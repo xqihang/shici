@@ -86,6 +86,7 @@ router.get('/create', function(req, res, next) {
 router.get('/update', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
         res.render('user/update', {
+            isLogin: res.isLogin,
             title : '更新用户信息',
             website: WEBSITE.name,
             userInfo : result

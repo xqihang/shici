@@ -16,27 +16,22 @@
 		        	<a href="javascript:;">
 		            	<i class="history icon"></i> <%- data.createdAt %>
 		            </a>
+		        	
 		        	<a class="ui horizontal label">知识共享：{{cc['<%- data.cc %>'] || '无'}}</a>
+		        	
 		        	<a class="right floated created" href="javascript:;" @click="qrcode()">
 		        		<i class="icon share alternate"></i>分享
 		        	</a>
-		        	<a class="right floated created" href="#comments-box">
-		        		<i class="icon comment"></i> {{comments.length}}
-		        	</a>
 		        </div>
 			</div>
-			<div class="ui">
-				
-			</div>
 			<div class="ui by-block content">
-				<div class="ui labeled button">
-					<div class="ui button mini"><i class="unhide icon"></i>浏览</div>
-					<a class="ui basic left pointing label"><%- data.views+1 %></a>
-				</div>
 
-				<div class="ui labeled button" @click="likes('<%- id %>')">
-					<div class="ui green button mini"><i class="thumbs up icon"></i>欢喜</div>
-					<a class="ui basic green left pointing label">{{like}}</a>
+				<div class="ui buttons mini">
+					<button class="ui button mini">浏览 ( <%- data.views+1 %> )</button>
+					<div class="or"></div>
+					<button class="ui positive button mini" @click="likes('<%- id %>')">
+						欢喜 ( {{like}} )
+					</button>
 				</div>
 				
 				<a href="/u/<%- data.userid %>" class="pull-right teal basic ui button mini" data-tooltip="联系方式：<%- data.user.email %>">作者专栏</a>
@@ -168,7 +163,12 @@
 							"articleid" : id,
 							"action" : "likes"
 						},function(res){
+							if(res.code == 0){
+								layer.msg('阁下的喜爱之情，作者已明了~');
+								return false;
+							}
 							_t.like = res.data.length;
+							layer.msg('感谢阁下的喜爱');
 						})
 					},
 					closeMsg : function(){

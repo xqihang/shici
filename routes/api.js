@@ -100,7 +100,12 @@ router.post('/events', function(req, res, next) {
 	apiService.event(req.body, function(result){
 		res.send( message(1, result) );
 	},function(err){
-		res.send( message(-2, err) );
+		// 重复喜欢
+		if(err.code == 0){
+			res.send( message(0) );
+		}else{
+			res.send( message(-2, err) );
+		}
 	});
 });
 
@@ -131,6 +136,15 @@ router.post('/login', function(req, res, next) {
 router.post('/update_user', function(req, res, next) {
 
 	apiService.user(req.cookies.userid, req.cookies.token, req.body, function(result){
+		res.send( message(1, result) );
+	},function(err){
+		res.send( message(0, err) );
+	});
+});
+
+router.post('/setpasswd', function(req, res, next) {
+
+	apiService.setPasswd( req.body.email, function(result){
 		res.send( message(1, result) );
 	},function(err){
 		res.send( message(0, err) );

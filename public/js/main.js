@@ -1,4 +1,5 @@
 $(function(){
+
 	$('.ui.dropdown').dropdown();
 
 	var createNew = new Vue({

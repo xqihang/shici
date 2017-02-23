@@ -105,9 +105,9 @@ module.exports = {
                     tmp.user = tmp.user._serverData;
                     tmp.date = moment(events[i].updatedAt).fromNow();
 
-                    if( tmp.action == 'comment' ){
+                    if (tmp.action == 'comment') {
                         commentsArr.push(JSON.stringify(tmp));
-                    }else if( tmp.action == 'likes' ){
+                    } else if (tmp.action == 'likes') {
                         likes += 1;
                     }
                 }
@@ -121,7 +121,7 @@ module.exports = {
         })
     },
     viewsById: function(id, success, err) {
-        var query = AV.Object.createWithoutData( table['art'], id);
+        var query = AV.Object.createWithoutData(table['art'], id);
         query.save().then(function(result) {
             result.increment('views', 1);
             result.fetchWhenSave(true);
@@ -177,16 +177,38 @@ module.exports = {
         one.set('article', article);
 
         one.set('action', data.action);
+
         if (data.action == 'comment') {
             one.set('comment', data.comment);
-        }
-        one.save().then(function() {
-            _t.events(data.articleid, data.action, function(results) {
-                success && success(results);
+            one.save().then(function() {
+                _t.events(data.articleid, data.action, function(results) {
+                    success && success(results);
+                })
+            }, function(error) {
+                err && err(error);
             })
-        }, function(error) {
-            err && err(error);
-        })
+        }
+        if (data.action == 'likes') {
+            var queryLike = new AV.Query(table['event']);
+            queryLike.equalTo('user', user);
+            queryLike.equalTo('author', author);
+            queryLike.equalTo('article', article);
+            queryLike.equalTo('action', 'likes');
+
+            queryLike.find().then(function(result) {
+                if (result.length) {
+                    err && err({ code: 0 });
+                } else {
+                    one.save().then(function() {
+                        _t.events(data.articleid, data.action, function(results) {
+                            success && success(results);
+                        })
+                    }, function(error) {
+                        err && err(error);
+                    })
+                }
+            })
+        }
     },
     createNew: function(data, userid, success, err) {
 
@@ -307,6 +329,13 @@ module.exports = {
             }
 
             err && err(body);
+        });
+    },
+    setPasswd: function(email, success, err) {
+        AV.User.requestPasswordReset(email).then(function(result) {
+            success && success(result);
+        }, function(error) {
+            err && err();
         });
     }
 }

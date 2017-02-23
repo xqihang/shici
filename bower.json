@@ -19,6 +19,7 @@
     "vue": "^2.0.8",
     "device.js": "https://github.com/matthewhudson/device.js.git#^0.2.7",
     "semantic": "semantic-ui#^2.2.6",
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "layui": "https://github.com/sentsin/layui.git#^1.0.8"
   }
 }
