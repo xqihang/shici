@@ -4,9 +4,15 @@
 .pull-left{
 	float:left;
 }
+body{
+	height:100vh;
+	overflow:hidden;
+}
 
 #page-wrap.page-wrap{
 	padding-bottom:100px;
+	height:100vh;
+	overflow-y:scroll;
 }
 .menu-control{
 	position:fixed!important;
