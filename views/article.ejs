@@ -5,6 +5,7 @@
     		<h1 class="text-center">『 <%= data.title %> 』</h1>
 	    	<div class="ui fluid card block-view">
 		        <div class="content">
+		        	<div class="ui teal top right attached label">知识共享：{{cc['<%- data.cc %>'] || '无'}}</div>
 		            <p><%- data.content %></p>
 		        </div>
 
@@ -16,8 +17,6 @@
 		        	<a href="javascript:;">
 		            	<i class="history icon"></i> <%- data.createdAt %>
 		            </a>
-		        	
-		        	<a class="ui horizontal label">知识共享：{{cc['<%- data.cc %>'] || '无'}}</a>
 		        	
 		        	<a class="right floated created" href="javascript:;" @click="qrcode()">
 		        		<i class="icon share alternate"></i>分享
