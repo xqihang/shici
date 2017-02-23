@@ -20,6 +20,9 @@
 		<a href="/" v-bind:class="[isMobile?'small':'']" class="ui teal basic button">
 			<i class="home icon"></i>首页
 		</a>
+		<a href="/user/create" class="ui green basic button">
+			<i class="write icon"></i>创作
+		</a>
 		<div class="ui dropdown">
 		    <a href="/user/index" v-bind:class="[isMobile?'small':'']" class="ui orange basic button">
 				<i class="child icon"></i>我的
@@ -39,15 +42,10 @@
 			        <div class="item" @click="goto('/user/index')">
 			        	<i class="leaf icon"></i>书房
 			        </div>
-			        <div class="item" @click="goto('/user/create')">
-			        	<i class="write icon"></i>创作
-			        </div>
 		        <% } %>
 		    </div>
 		</div>
-		<a href="/about" v-bind:class="[isMobile?'small':'']" class="ui green basic button">
-			<i class="map signs icon"></i>关于
-		</a>
+
 		<script>
 			new Vue({
 				el : '.ui.menu-control',
