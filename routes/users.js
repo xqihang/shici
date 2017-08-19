@@ -75,11 +75,14 @@ router.get('/event', function(req, res, next) {
     });
 });
 
-router.get('/create', function(req, res, next) {
-    res.render('create', {
-        isLogin: res.isLogin,
-        website: WEBSITE.name,
-        title: '发布一条新作品'
+router.get('/write', function(req, res, next) {
+    apiService.currentUser(req.cookies.token, function(result){
+        res.render('create', {
+            isLogin: res.isLogin,
+            website: WEBSITE.name,
+            title: '发布一条新作品',
+            userInfo : result
+        });
     });
 });
 
