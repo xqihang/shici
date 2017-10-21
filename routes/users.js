@@ -9,6 +9,7 @@ var apiService = require('../service/api');
 var WEBSITE = require('../config/website');
 
 router.use(function(req, res, next){
+    console.log(req.cookies.token);
     if( !req.cookies.token || req.cookies.token == 'undefined' ){
         res.redirect(301,'/login');
     }else{
