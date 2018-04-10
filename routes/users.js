@@ -64,7 +64,7 @@ router.get('/event', function(req, res, next) {
 
             console.log(eventlist[i].article)
         }
-        res.render('user/event', {
+        res.render('users/event', {
             isLogin: res.isLogin,
             website: WEBSITE.name,
             title : '互动消息',
@@ -89,7 +89,7 @@ router.get('/write', function(req, res, next) {
 
 router.get('/update', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
-        res.render('user/update', {
+        res.render('users/update', {
             isLogin: res.isLogin,
             title : '更新用户信息',
             website: WEBSITE.name,
