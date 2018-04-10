@@ -104,8 +104,4 @@ router.all('/logout', function(req, res, next) {
     res.redirect('/');
 });
 
-router.all('/', function(req, res, next) {
-    res.send('index');
-});
-
 module.exports = router;
