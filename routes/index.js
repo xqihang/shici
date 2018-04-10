@@ -117,7 +117,7 @@ router.get('/write/:id', function(req, res, next) {
 
 router.get('/signup', function(req, res, next) {
 	if( req.cookies.token && req.cookies.token != 'undefined' ){
-        res.redirect(301,'/user/index');
+        res.redirect(301,'/users/index');
     }
 
     res.render('signup', {
@@ -131,7 +131,7 @@ router.get('/signup', function(req, res, next) {
 
 router.get('/login', function(req, res, next) {
 	if( req.cookies.token && req.cookies.token != 'undefined' ){
-        res.redirect(301,'/user/index');
+        res.redirect(301,'/users/index');
     }
     res.render('login', {
     	isLogin: res.isLogin,

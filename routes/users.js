@@ -39,7 +39,7 @@ router.get('/index', function(req, res, next) {
                     eventArr.push(e);
             }
         }
-        res.render('user/index', {
+        res.render('users/index', {
             isLogin: res.isLogin,
             website: WEBSITE.name,
             title : '用户中心',
