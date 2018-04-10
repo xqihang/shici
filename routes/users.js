@@ -76,9 +76,9 @@ router.get('/event', function(req, res, next) {
     });
 });
 
-router.get('/write', function(req, res, next) {
+router.get('/push', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
-        res.render('users/update', {
+        res.render('users/write', {
             isLogin: res.isLogin,
             website: WEBSITE.name,
             title: '发布一条新作品',
