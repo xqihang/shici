@@ -78,7 +78,7 @@ router.get('/event', function(req, res, next) {
 
 router.get('/write', function(req, res, next) {
     apiService.currentUser(req.cookies.token, function(result){
-        res.render('create', {
+        res.render('users/write', {
             isLogin: res.isLogin,
             website: WEBSITE.name,
             title: '发布一条新作品',
