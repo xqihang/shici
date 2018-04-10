@@ -1,0 +1,129 @@
+<%- include('../header'); %>
+<div class="main user-main">
+	<div class="ui small message" v-if="action">
+    	<i class="close icon" @click="closeMsg()"></i>
+    	<div v-html="msg[action].replace('您',' <%- userInfo.username %> ')"></div>
+    </div>
+
+	<div class="ui green inverted menu">
+		<a href="/u/<%- userInfo.objectId %>" class="item active left">
+	        <i class="home icon"></i> {{userInfo.username}}
+	    </a>
+	    <a href="/users/write" class="item">
+	        <i class="write icon"></i> 创作
+	    </a>
+	    <a href="/users/update" class="item">
+	        <i class="child icon"></i> 个人信息
+	    </a>
+	    <a href="/users/event" class="item">
+	        <i class="alarm outline icon"></i> 与我有关
+	    </a>
+	    <a href="/about" class="item">
+	        <i class="map signs icon"></i> 江湖
+	    </a>
+	</div>
+
+	<div class="ui three statistics count-box">
+		<div class="red statistic">
+			<div class="value"><%- count %></div>
+			<div class="label">篇诗词</div>
+		</div>
+		<div class="yellow statistic">
+			<div class="value"><%- comments.length %></div>
+			<div class="label">条评论</div>
+		</div>
+		<div class="orange statistic">
+			<div class="value"><%- likes.length %></div>
+			<div class="label">人喜欢</div>
+		</div>
+	</div>
+
+	
+	<table class="ui green celled striped table">
+		<thead>
+			<tr>
+				<th>标题</th>
+				<th class="center aligned" width="60">状态</th>
+				<th class="center aligned" width="50">分享</th>
+			</tr>
+		</thead>	
+	    <tbody>
+	    	<% list.forEach(function(item){ %>
+	        <tr>
+	            <td>
+	                <a href="/write/<%- item.id %>">
+	                	<%- item._serverData.title %>
+	                </a>
+	            </td>
+	            <td class="center aligned">
+	        		<% if (item._serverData.public) { %>
+						<i class="unhide icon"></i>
+					<% } else { %>
+						<i class="hide icon"></i>
+					<% } %>
+	        	</td>
+	            <td class="center aligned">
+	            	<!-- <a href="javascript:;" class="ui green mini icon button" title="编辑">
+	                	<i class="write icon"></i>
+	                </a> -->
+	                <!-- <a href="javascript:;" class="ui red mini icon button" title="删除">
+	                	<i class="trash icon"></i>
+	                </a> -->
+	                <a href="javascript:;" class="ui teal mini icon button" title="分享"  @click="qrcode('<%- item.id %>','<%- item._serverData.title %>')">
+	                	<i class="share alternate icon"></i>
+	                </a>
+	            </td>
+	        </tr>
+	        <% }) %>
+	    </tbody>
+	</table>
+
+	<div class="ui basic modal qrcode-modal">
+	    <i class="close icon"></i>
+	    <div class="header">分享这篇文字</div>
+	    <div class="image content">
+	    	<div class="ui medium image">
+		    	<img v-bind:src="'http://s.jiathis.com/qrcode.php?url=http://shici.freelion.me/write/'+qrcodeid" alt="">
+		    </div>
+	        <div class="description">
+	        	<p>想必你一定很喜欢这篇『 {{title}} 』</p>
+	        	<p>那就分享给你的好朋友吧~</p>
+	        </div>
+	    </div>
+	    <div class="actions">
+	        <div class="ui positive right labeled icon button">
+	            分享出去了~
+	            <i class="checkmark icon"></i>
+	        </div>
+	    </div>
+	</div>
+
+	<script>
+		var userInfo = '<%- JSON.stringify(userInfo) %>';
+		new Vue({
+			el : '.main',
+			data : {
+				action : '<%- action %>',
+				username : '<%- userInfo.username %>',
+				userInfo: JSON.parse(userInfo),
+				qrcodeid: '',
+				title : '<%= website %>',
+				msg : {
+					login : '欢迎您回归到 『 <%= website %> 』的世界...',
+					signup : '很高兴您注册成为 『 <%= website %> 』 的新用户'
+				}
+			},
+			methods : {
+				closeMsg : function(){
+					this.action = '';
+				},
+				qrcode: function(id,title){
+					this.qrcodeid = id;
+					this.title = title;
+					$('.qrcode-modal').modal({blurring: true}).modal('show');
+				}
+			}
+		})
+	</script>
+</div>
+<%- include('../footer'); %>
