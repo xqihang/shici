@@ -61,8 +61,6 @@ router.get('/event', function(req, res, next) {
             var temp = eventlist[i]._serverData;
             temp.date = moment(eventlist[i].updatedAt).fromNow();
             eventlist[i] = temp;
-
-            console.log(eventlist[i].article)
         }
         res.render('users/event', {
             isLogin: res.isLogin,
@@ -77,13 +75,10 @@ router.get('/event', function(req, res, next) {
 });
 
 router.get('/push', function(req, res, next) {
-    apiService.currentUser(req.cookies.token, function(result){
-        res.render('users/write', {
-            isLogin: res.isLogin,
-            website: WEBSITE.name,
-            title: '发布一条新作品',
-            userInfo : result
-        });
+    res.render('users/write', {
+        isLogin: res.isLogin,
+        website: WEBSITE.name,
+        title: '发布一条新作品'
     });
 });
 
